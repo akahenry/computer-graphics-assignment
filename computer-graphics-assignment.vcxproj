@@ -23,6 +23,7 @@
     <ClInclude Include="Core\Headers\error.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
+    <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
     <ClInclude Include="Include\utils.h" />
   </ItemGroup>
@@ -32,6 +33,7 @@
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />
     <ClCompile Include="Core\Source\main.cpp" />
+    <ClCompile Include="Core\Source\Window\window.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
   </ItemGroup>
   <ItemGroup>

@@ -22,8 +22,20 @@
     <Filter Include="Resource files\glad">
       <UniqueIdentifier>{6a0cf8b0-c991-47d1-8fc2-4b90e35738b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\Window">
+      <UniqueIdentifier>{e0c95e79-d78c-4920-a160-8c289da4a6e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Window">
+      <UniqueIdentifier>{cd62fd14-7192-43fe-90da-5f9e694df2b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\dejavufont.h">
+      <Filter>Resource files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\utils.h">
+      <Filter>Resource files</Filter>
+    </ClInclude>
     <ClInclude Include="Core\Headers\engine.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
@@ -36,11 +48,8 @@
     <ClInclude Include="Core\Headers\textrendering.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Include\dejavufont.h">
-      <Filter>Resource files</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\utils.h">
-      <Filter>Resource files</Filter>
+    <ClInclude Include="Core\Headers\window.hpp">
+      <Filter>Header files\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="Include\glad\glad.c">
       <Filter>Resource files\glad</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Window\window.cpp">
+      <Filter>Source files\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
