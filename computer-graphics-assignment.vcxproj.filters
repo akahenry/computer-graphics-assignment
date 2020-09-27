@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source files\Engine">
+      <UniqueIdentifier>{c35a3970-b3a9-490e-9920-7eb5ff31b738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Engine">
+      <UniqueIdentifier>{d7651684-fffc-4a22-bfc7-964644518114}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource files\glad">
+      <UniqueIdentifier>{6a0cf8b0-c991-47d1-8fc2-4b90e35738b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\Headers\engine.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\error.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\shader.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\textrendering.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\dejavufont.h">
+      <Filter>Resource files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\utils.h">
+      <Filter>Resource files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\Source\Engine\engine.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\error.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\shader.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\textrendering.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\main.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\glad\glad.c">
+      <Filter>Resource files\glad</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Include\shader_fragment.glsl">
+      <Filter>Resource files</Filter>
+    </None>
+    <None Include="Include\shader_vertex.glsl">
+      <Filter>Resource files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
