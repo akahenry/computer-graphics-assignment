@@ -5,6 +5,7 @@ class Engine
 {
     public:
         void Initialize();
+        void Terminate();
 };
 
 #endif

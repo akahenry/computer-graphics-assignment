@@ -24,6 +24,8 @@ private:
     GLFWwindow* window;
     glm::vec2 size;
     float screenRatio;
+    GLuint program_id;
+    
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback = &FramebufferSizeCallback);
 
@@ -31,14 +33,14 @@ private:
 public:
 	Window(int width, int height, const char* name)
 	{
-        window = glfwCreateWindow(width, height, name, NULL, NULL);
-        if (!window)
+        this->window = glfwCreateWindow(width, height, name, NULL, NULL);
+        if (!this->window)
         {
             glfwTerminate();
             ErrorCallback(1, "ERROR: glfwCreateWindow() failed.\n");
             std::exit(EXIT_FAILURE);
         }
-        size = glm::vec2(width, height);
+        this->size = glm::vec2(width, height);
 
         // Definimos a função de callback que será chamada sempre que o usuário
         // pressionar alguma tecla do teclado ...
@@ -53,7 +55,7 @@ public:
         SetFrameBufferSizeCallback();
 
         // Indicamos que as chamadas OpenGL deverão renderizar nesta janela
-        glfwMakeContextCurrent(window);
+        glfwMakeContextCurrent(this->window);
 
         // Carregamento de todas funções definidas por OpenGL 3.3, utilizando a
         // biblioteca GLAD.
@@ -94,7 +96,7 @@ public:
         GLuint fragment_shader_id = LoadShader_Fragment("./Include/shader_fragment.glsl");
 
         // Criamos um programa de GPU utilizando os shaders carregados acima
-        GLuint program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
+        this->program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
 
         // Construímos a representação de um triângulo
         //GLuint vertex_array_object_id = BuildTriangles();
@@ -119,5 +121,21 @@ public:
         //glm::mat4 the_model;
         //glm::mat4 the_view;
 	}
+
+    bool ShouldClose();
+
+    // Verificamos com o sistema operacional se houve alguma interação do
+    // usuário (teclado, mouse, ...). Caso positivo, as funções de callback
+    // definidas anteriormente usando glfwSet*Callback() serão chamadas
+    // pela biblioteca GLFW.
+    void PollEvents();
+
+    // Definimos a cor do "fundo" do framebuffer como branco.  Tal cor é
+    // definida como coeficientes RGBA: Red, Green, Blue, Alpha; isto é:
+    // Vermelho, Verde, Azul, Alpha (valor de transparência).
+    // Conversaremos sobre sistemas de cores nas aulas de Modelos de Iluminação.
+    //
+    //                      R           G           B           A
+    void ClearColor(float red, float green, float blue, float alpha);
 };
 #endif

@@ -31,8 +31,41 @@ void Window::SetFrameBufferSizeCallback(GLFWframebuffersizefun callback)
     // Definimos a função de callback que será chamada sempre que a janela for
     // redimensionada, por consequência alterando o tamanho do "framebuffer"
     // (região de memória onde são armazenados os pixels da imagem).
-    glfwSetFramebufferSizeCallback(window, callback);
-    glfwSetWindowSize(window, width, height); // Forçamos a chamada do callback acima, para definir g_ScreenRatio.
+    glfwSetFramebufferSizeCallback(this->window, callback);
+    glfwSetWindowSize(this->window, width, height); // Forçamos a chamada do callback acima, para definir g_ScreenRatio.
 
-    screenRatio = g_ScreenRatio;
+    this->screenRatio = g_ScreenRatio;
+}
+
+bool Window::ShouldClose()
+{
+    return glfwWindowShouldClose(this->window);
+}
+
+void Window::PollEvents()
+{
+    // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
+    // os shaders de vértice e fragmentos).
+    glUseProgram(this->program_id);
+
+    // O framebuffer onde OpenGL executa as operações de renderização não
+    // é o mesmo que está sendo mostrado para o usuário, caso contrário
+    // seria possível ver artefatos conhecidos como "screen tearing". A
+    // chamada abaixo faz a troca dos buffers, mostrando para o usuário
+    // tudo que foi renderizado pelas funções acima.
+    // Veja o link: Veja o link: https://en.wikipedia.org/w/index.php?title=Multiple_buffering&oldid=793452829#Double_buffering_in_computer_graphics
+    glfwSwapBuffers(this->window);
+
+    glfwPollEvents();
+
+
+}
+
+void Window::ClearColor(float red, float green, float blue, float alpha)
+{
+    glClearColor(red, green, blue, alpha);
+
+    // "Pintamos" todos os pixels do framebuffer com a cor definida acima,
+    // e também resetamos todos os pixels do Z-buffer (depth buffer).
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

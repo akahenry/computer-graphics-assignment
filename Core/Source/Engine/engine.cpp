@@ -37,3 +37,9 @@ void Engine::Initialize()
     // funções modernas de OpenGL.
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 };
+
+void Engine::Terminate()
+{
+    // Finalizamos o uso dos recursos do sistema operacional
+    glfwTerminate();
+}
