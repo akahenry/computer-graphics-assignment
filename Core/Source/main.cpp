@@ -8,5 +8,5 @@ int main()
 
     eng.Initialize();
 
-    Window window = Window(800, 600, "teeste");
+    Window window = Window(800, 600, "test");
 }

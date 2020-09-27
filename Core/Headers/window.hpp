@@ -31,7 +31,7 @@ private:
 public:
 	Window(int width, int height, const char* name)
 	{
-        window = glfwCreateWindow(width, height, "name", NULL, NULL);
+        window = glfwCreateWindow(width, height, name, NULL, NULL);
         if (!window)
         {
             glfwTerminate();
