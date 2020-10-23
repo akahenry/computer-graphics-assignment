@@ -92,8 +92,8 @@ public:
         //       |
         //       o-- ...
         //
-        GLuint vertex_shader_id = LoadShader_Vertex("./Include/shader_vertex.glsl");
-        GLuint fragment_shader_id = LoadShader_Fragment("./Include/shader_fragment.glsl");
+        GLuint vertex_shader_id = LoadShader_Vertex("shader_vertex.glsl");
+        GLuint fragment_shader_id = LoadShader_Fragment("shader_fragment.glsl");
 
         // Criamos um programa de GPU utilizando os shaders carregados acima
         this->program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
