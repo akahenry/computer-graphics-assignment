@@ -3,18 +3,19 @@
 
 #include <iostream>
 #include <iostream>
-#include <glad/glad.h>   // Criação de contexto OpenGL 3.3
-#include <GLFW/glfw3.h>  // Criação de janelas do sistema operacional
-// Headers da biblioteca GLM: criação de matrizes e vetores.
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 
 #include <error.hpp>
 #include <shader.hpp>
 #include <textrendering.hpp>
-
 #include <engine.hpp>
 #include <error.hpp>
+#include <mesh.hpp>
+#include <camera.hpp>
+#include <color.hpp>
 
 class Window
 {
@@ -23,24 +24,40 @@ private:
     glm::vec2 size;
     float screenRatio;
     GLuint program_id;
+	Camera currentCamera;
+	glm::mat4 projectionMatrix;
+	glm::mat4 modelMatrix;
+	glm::mat4 viewMatrix;
 
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
+	glm::mat4 CalcViewMatrix();
+	
+	// Função auxiliar para gerar as matrizes bizarras do glm
+	static glm::mat4 MakeGlmMatrix(
+		float m00, float m01, float m02, float m03,
+		float m10, float m11, float m12, float m13,
+		float m20, float m21, float m22, float m23,
+		float m30, float m31, float m32, float m33
+	)
+	{
+		return glm::mat4(
+			m00, m10, m20, m30,
+			m01, m11, m21, m31,
+			m02, m12, m22, m32,
+			m03, m13, m23, m33
+		);
+	}
 
 public:
 	Window(int width, int height, const char* name);
-
     bool ShouldClose();
-
-    // Verificamos com o sistema operacional se houve alguma interação do
-    // usuário (teclado, mouse, ...). Caso positivo, as funções de callback
-    // definidas anteriormente usando glfwSet*Callback() serão chamadas
-    // pela biblioteca GLFW.
     void PollEvents();
-
-    // Limpa a tela com a cor escolhida
-    void ClearWindow(float red, float green, float blue, float alpha);
-
+    void ClearWindow(Color color);
 	void DrawText(const std::string str, float x, float y, float scale = 1.0f);
+	void DrawMesh(Mesh mesh);
+	void SetCamera(Camera camera);
+	// Coisas que precisam ser feitas antes de desenhar (limpar a tela e calcular matrizes de view e projection)
+	void PreDrawing(Color clearColor);
 };
 #endif

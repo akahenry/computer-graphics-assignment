@@ -1,4 +1,13 @@
-#include "camera.h"
+#include <camera.hpp>
+
+Camera::Camera(Vector3 position, float distance, float horizontalAngle, float verticalAngle, int lookType)
+{
+	this->position = position;
+	this->distance = distance;
+	this->horizontalAngle = horizontalAngle;
+	this->verticalAngle = verticalAngle;
+	this->lookType = lookType;
+}
 
 Vector3 Camera::getViewVector()
 {

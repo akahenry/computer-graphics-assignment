@@ -45,10 +45,16 @@
     <ClInclude Include="Core\Headers\window.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="Core\Headers\camera.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="vector3.h">
+    <ClInclude Include="Core\Headers\mesh.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\vector3.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\color.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,10 +80,16 @@
     <ClCompile Include="Core\Source\Window\window.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="Core\Source\Engine\camera.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="vector3.cpp">
+    <ClCompile Include="Core\Source\Engine\mesh.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\vector3.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\color.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
   </ItemGroup>

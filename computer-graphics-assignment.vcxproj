@@ -19,26 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
+    <ClInclude Include="Core\Headers\camera.hpp" />
+    <ClInclude Include="Core\Headers\color.hpp" />
     <ClInclude Include="Core\Headers\engine.hpp" />
     <ClInclude Include="Core\Headers\error.hpp" />
+    <ClInclude Include="Core\Headers\mesh.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
+    <ClInclude Include="Core\Headers\vector3.hpp" />
     <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
     <ClInclude Include="Include\utils.h" />
-    <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
+    <ClCompile Include="Core\Source\Engine\camera.cpp" />
+    <ClCompile Include="Core\Source\Engine\color.cpp" />
     <ClCompile Include="Core\Source\Engine\engine.cpp" />
     <ClCompile Include="Core\Source\Engine\error.cpp" />
+    <ClCompile Include="Core\Source\Engine\mesh.cpp" />
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />
+    <ClCompile Include="Core\Source\Engine\vector3.cpp" />
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
-    <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Include\shader_fragment.glsl" />

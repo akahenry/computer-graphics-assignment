@@ -38,9 +38,6 @@ Window::Window(int width, int height, const char* name)
 	// Criamos um programa de GPU utilizando os shaders carregados acima
 	this->program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
 
-	// Construímos a representação de um triângulo
-	//GLuint vertex_array_object_id = BuildTriangles();
-
 	// Inicializamos o código para renderização de texto.
 	TextRendering_Init();
 
@@ -56,12 +53,6 @@ Window::Window(int width, int height, const char* name)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-
-	// Variáveis auxiliares utilizadas para chamada à função
-	// TextRendering_ShowModelViewProjection(), armazenando matrizes 4x4.
-	//glm::mat4 the_projection;
-	//glm::mat4 the_model;
-	//glm::mat4 the_view;
 }
 
 // Callback pra quando a janela for redimensionada
@@ -93,25 +84,46 @@ bool Window::ShouldClose()
 
 void Window::PollEvents()
 {
-    // Pedimos para a GPU utilizar o programa de GPU criado acima (contendo
-    // os shaders de vértice e fragmentos).
-    glUseProgram(this->program_id);
-
     // Mostra o buffer que tem a tela desenhada no último frame (necessário fazer esse swap pra não ter screen tearing)
     glfwSwapBuffers(this->window);
 
     glfwPollEvents();
 }
 
-void Window::ClearWindow(float red, float green, float blue, float alpha)
+void Window::ClearWindow(Color color)
 {
-    glClearColor(red, green, blue, alpha);
+    glClearColor(color.R, color.G, color.B, color.A);
 
     // limpa framebuffer com a cor escolhida e reseta os pixels do z-buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+glm::mat4 Window::CalcViewMatrix()
+{
+	// Não implementado
+}
+
+void Window::PreDrawing(Color clearColor)
+{
+	this->ClearWindow(clearColor);
+	this->viewMatrix = this->CalcViewMatrix();
+	// Não implementado (tem que calcular a projection matrix)
+}
+
 void Window::DrawText(const std::string str, float x, float y, float scale)
 {
 	TextRendering_PrintString(this->window, str, x, y, scale);
+}
+
+void Window::DrawMesh(Mesh mesh)
+{
+	// Pedimos para a GPU utilizar o programa de GPU criado no construtor
+	glUseProgram(this->program_id);
+	glBindVertexArray(mesh.vaoId);
+	// Não implementado (tem que calcular a matriz model e usar as matrizes pra fazer os bagulho louco do opengl)
+}
+
+void Window::SetCamera(Camera camera)
+{
+	this->currentCamera = camera;
 }
