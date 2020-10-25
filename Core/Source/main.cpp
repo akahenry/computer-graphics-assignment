@@ -12,8 +12,8 @@ int main()
 
     while (!window.ShouldClose())
     {
-        window.ClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
+		window.ClearWindow(1.0f, 1.0f, 1.0f, 1.0f);
+		window.DrawText("Texto de teste", 0, 0);
         window.PollEvents();
     }
 
