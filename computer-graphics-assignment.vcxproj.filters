@@ -48,9 +48,6 @@
     <ClInclude Include="camera.h">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="mesh.h">
-      <Filter>Header files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="vector3.h">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
       <Filter>Source files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="camera.cpp">
-      <Filter>Source files\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="mesh.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="vector3.cpp">

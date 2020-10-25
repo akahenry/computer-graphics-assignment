@@ -27,7 +27,6 @@
     <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
     <ClInclude Include="Include\utils.h" />
-    <ClInclude Include="mesh.h" />
     <ClInclude Include="vector3.h" />
   </ItemGroup>
   <ItemGroup>
@@ -39,7 +38,6 @@
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
-    <ClCompile Include="mesh.cpp" />
     <ClCompile Include="vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
