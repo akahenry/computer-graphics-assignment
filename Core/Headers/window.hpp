@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <error.hpp>
 #include <shader.hpp>
@@ -28,11 +29,17 @@ private:
 	glm::mat4 projectionMatrix;
 	glm::mat4 modelMatrix;
 	glm::mat4 viewMatrix;
+	GLint model_uniform;
+	GLint view_uniform;
+	GLint projection_uniform;
+	GLint render_as_black_uniform;
 
-	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	glm::mat4 CalcViewMatrix();
+	glm::mat4 CalcProjectionMatrix();
 	
+	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+	static glm::mat4 CalcModelFromMesh(Mesh mesh);
 	// Função auxiliar para gerar as matrizes bizarras do glm
 	static glm::mat4 MakeGlmMatrix(
 		float m00, float m01, float m02, float m03,

@@ -51,6 +51,7 @@ void Mesh::MakeBox(Vector3 position, Vector3 size)
 		3, 5, 7
 	};
 	this->indices = indices;
+	this->numIndices = sizeof(indices) / sizeof(indices[0]);
 
 	this->renderingMode = GL_TRIANGLES;
 

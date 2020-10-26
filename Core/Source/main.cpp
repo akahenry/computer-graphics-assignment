@@ -7,13 +7,15 @@
 int main()
 {
     Engine engine;
-
     engine.Initialize();
 
     Window window = Window(800, 600, "test");
 
+	Camera camera = Camera();
+	window.SetCamera(camera);
+
 	Mesh box;
-	box.MakeBox(Vector3(0, 0, 0), Vector3(0.5, 0.5, 0.5));
+	box.MakeBox(Vector3(0, 0, 5), Vector3(2, 2, 2));
 
     while (!window.ShouldClose())
     {

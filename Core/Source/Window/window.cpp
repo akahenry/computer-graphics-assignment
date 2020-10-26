@@ -42,10 +42,10 @@ Window::Window(int width, int height, const char* name)
 	TextRendering_Init();
 
 	// Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
-	GLint model_uniform = glGetUniformLocation(program_id, "model");
-	GLint view_uniform = glGetUniformLocation(program_id, "view");
-	GLint projection_uniform = glGetUniformLocation(program_id, "projection");
-	GLint render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black");
+	model_uniform = glGetUniformLocation(program_id, "model");
+	view_uniform = glGetUniformLocation(program_id, "view");
+	projection_uniform = glGetUniformLocation(program_id, "projection");
+	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black");
 
 	// Habilitamos o Z-buffer
 	glEnable(GL_DEPTH_TEST);
@@ -100,14 +100,91 @@ void Window::ClearWindow(Color color)
 
 glm::mat4 Window::CalcViewMatrix()
 {
-	// Não implementado
+	Vector3 u = currentCamera.getRelativeRightVector();
+	Vector3 v = currentCamera.getRelativeUpVector();
+	Vector3 w = currentCamera.getRelativeBackVector();
+
+	return Window::MakeGlmMatrix(
+		u.x , u.y , u.z , (-u).DotProduct(currentCamera.position),
+		v.x , v.y , v.z , (-v).DotProduct(currentCamera.position),
+		w.x , w.y , w.z , (-w).DotProduct(currentCamera.position),
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+}
+
+glm::mat4 Window::CalcProjectionMatrix()
+{
+	float n = currentCamera.nearPlane;
+	float f = currentCamera.farPlane;
+	float fov = currentCamera.fov;
+
+	float t = fabs(currentCamera.nearPlane) * tanf(this->currentCamera.fov / 2.0f);
+	float b = -t;
+	float r = t * screenRatio;
+	float l = -r;
+
+	glm::mat4 M = MakeGlmMatrix(
+		2/(r-l), 0.0f	, 0.0f	 , -(r+l)/(r-l),
+        0.0f   , 2/(t-b), 0.0f	 , -(t+b)/(t-b),
+        0.0f   , 0.0f	, 2/(f-n), -(f+n)/(f-n),
+        0.0f   , 0.0f	, 0.0f	 , 1.0f
+	);
+
+	glm::mat4 P = MakeGlmMatrix(
+		n	, 0.0f, 0.0f, 0.0f,
+		0.0f, n	  , 0.0f, 0.0f,
+		0.0f, 0.0f, n+f , -f*n,
+		0.0f, 0.0f, 1.0f, 0.0f
+	);
+
+	return -M * P;
+}
+
+glm::mat4 Window::CalcModelFromMesh(Mesh mesh)
+{
+	glm::mat4 S = MakeGlmMatrix(
+		mesh.scale.x, 0.0f		  , 0.0f		, 0.0f,
+		0.0f		, mesh.scale.y, 0.0f		, 0.0f,
+		0.0f		, 0.0f		  , mesh.scale.z, 0.0f,
+		0.0f		, 0.0f		  , 0.0f		, 1.0f
+	);
+
+
+	float c = cos(mesh.rotationAngle);
+	float s = sin(mesh.rotationAngle);
+
+	Vector3 v = mesh.rotationAxis.Normalized();
+
+	float vx = v.x;
+	float vy = v.y;
+	float vz = v.z;
+
+	// rotação em torno de um eixo arbitrário
+	glm::mat4 R = MakeGlmMatrix(
+		vx*vx*(1-c)+c	, vx*vy*(1-c)-vz*s, vx*vz*(1-c)+vy*s, 0.0f,
+        vx*vy*(1-c)+vz*s, vy*vy*(1-c)+c	  , vy*vz*(1-c)-vx*s, 0.0f,
+        vx*vz*(1-c)-vy*s, vy*vz*(1-c)+vx*s, vz*vz*(1-c)+c	, 0.0f,
+        0.0f			, 0.0f			  , 0.0f			, 1.0f
+	);
+
+	glm::mat4 T = MakeGlmMatrix(
+		1.0f, 0.0f, 0.0f, mesh.position.x,
+		0.0f, 1.0f, 0.0f, mesh.position.y,
+		0.0f, 0.0f, 1.0f, mesh.position.z,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+
+	return T * R * S;
 }
 
 void Window::PreDrawing(Color clearColor)
 {
 	this->ClearWindow(clearColor);
 	this->viewMatrix = this->CalcViewMatrix();
-	// Não implementado (tem que calcular a projection matrix)
+	this->projectionMatrix = this->CalcProjectionMatrix();
+
+	glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+	glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 }
 
 void Window::DrawText(const std::string str, float x, float y, float scale)
@@ -120,7 +197,17 @@ void Window::DrawMesh(Mesh mesh)
 	// Pedimos para a GPU utilizar o programa de GPU criado no construtor
 	glUseProgram(this->program_id);
 	glBindVertexArray(mesh.vaoId);
-	// Não implementado (tem que calcular a matriz model e usar as matrizes pra fazer os bagulho louco do opengl)
+	
+	glm::mat4 modelMatrix = CalcModelFromMesh(mesh);
+
+	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniform1i(render_as_black_uniform, false);
+	glDrawElements(
+		mesh.renderingMode,
+		mesh.numIndices,
+		GL_UNSIGNED_INT,
+		(void*)0
+	);
 }
 
 void Window::SetCamera(Camera camera)
