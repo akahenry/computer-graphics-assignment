@@ -12,6 +12,7 @@ public:
 	float rotationAngle = 0;
 	Vector3 rotationAxis = Vector3(0,1,0);
 	GLenum renderingMode = GL_TRIANGLES; // GL_TRIANGLES, GL_TRIANGLE_FAN ...
+	int numVerticesComponents; // Quantidade de vértices*4, um float pra cada dimensão
 	int numIndices; // Quantidade de indices no vetor indices
 
 	void MakeBox(Vector3 position, Vector3 size);

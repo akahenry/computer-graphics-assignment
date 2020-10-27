@@ -1,7 +1,5 @@
 #include <window.hpp>
 
-float g_ScreenRatio;
-
 Window::Window(int width, int height, const char* name)
 {
 	this->window = glfwCreateWindow(width, height, name, NULL, NULL);
@@ -55,26 +53,25 @@ Window::Window(int width, int height, const char* name)
 	glFrontFace(GL_CCW);
 }
 
-// Callback pra quando a janela for redimensionada
+float Window::GetScreenRatio()
+{
+	int width;
+	int height;
+	glfwGetWindowSize(this->window, &width, &height);
+	return (float)width / height;
+}
+
 void Window::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
     // Atualiza o Viewport Mapping
     glViewport(0, 0, width, height);
-
-	// esse ratio é usado pra definir a matriz de projeção, pra não ter distorções indesejadas
-    g_ScreenRatio = (float)width / height;
 }
 
 void Window::SetFrameBufferSizeCallback(GLFWframebuffersizefun callback)
 {
-    int width = int(size.x);
-    int height = int(size.y);
-
     glfwSetFramebufferSizeCallback(this->window, callback);
 	// Forçamos a chamada do callback acima, para definir g_ScreenRatio
-    glfwSetWindowSize(this->window, width, height);
-
-    this->screenRatio = g_ScreenRatio;
+    glfwSetWindowSize(this->window, size.x, size.y);
 }
 
 bool Window::ShouldClose()
@@ -86,7 +83,6 @@ void Window::PollEvents()
 {
     // Mostra o buffer que tem a tela desenhada no último frame (necessário fazer esse swap pra não ter screen tearing)
     glfwSwapBuffers(this->window);
-
     glfwPollEvents();
 }
 
@@ -98,13 +94,13 @@ void Window::ClearWindow(Color color)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-glm::mat4 Window::CalcViewMatrix()
+void Window::CalcViewMatrix()
 {
 	Vector3 u = currentCamera.getRelativeRightVector();
 	Vector3 v = currentCamera.getRelativeUpVector();
 	Vector3 w = currentCamera.getRelativeBackVector();
 
-	return Window::MakeGlmMatrix(
+	this->viewMatrix = Window::MakeGlmMatrix(
 		u.x , u.y , u.z , (-u).DotProduct(currentCamera.position),
 		v.x , v.y , v.z , (-v).DotProduct(currentCamera.position),
 		w.x , w.y , w.z , (-w).DotProduct(currentCamera.position),
@@ -112,7 +108,7 @@ glm::mat4 Window::CalcViewMatrix()
 	);
 }
 
-glm::mat4 Window::CalcProjectionMatrix()
+void Window::CalcProjectionMatrix()
 {
 	float n = currentCamera.nearPlane;
 	float f = currentCamera.farPlane;
@@ -120,7 +116,7 @@ glm::mat4 Window::CalcProjectionMatrix()
 
 	float t = fabs(currentCamera.nearPlane) * tanf(this->currentCamera.fov / 2.0f);
 	float b = -t;
-	float r = t * screenRatio;
+	float r = t * GetScreenRatio();
 	float l = -r;
 
 	glm::mat4 M = MakeGlmMatrix(
@@ -137,10 +133,10 @@ glm::mat4 Window::CalcProjectionMatrix()
 		0.0f, 0.0f, 1.0f, 0.0f
 	);
 
-	return -M * P;
+	this->projectionMatrix = -M * P;
 }
 
-glm::mat4 Window::CalcModelFromMesh(Mesh mesh)
+void Window::CalcModelFromMesh(Mesh mesh)
 {
 	glm::mat4 S = MakeGlmMatrix(
 		mesh.scale.x, 0.0f		  , 0.0f		, 0.0f,
@@ -174,17 +170,17 @@ glm::mat4 Window::CalcModelFromMesh(Mesh mesh)
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 
-	return T * R * S;
+	this->modelMatrix = T * R * S;
 }
 
 void Window::PreDrawing(Color clearColor)
 {
 	this->ClearWindow(clearColor);
-	this->viewMatrix = this->CalcViewMatrix();
-	this->projectionMatrix = this->CalcProjectionMatrix();
+	this->CalcViewMatrix();
+	this->CalcProjectionMatrix();
 
-	glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(this->viewMatrix));
+	glUniformMatrix4fv(projection_uniform, 1, GL_FALSE, glm::value_ptr(this->projectionMatrix));
 }
 
 void Window::DrawText(const std::string str, float x, float y, float scale)
@@ -198,7 +194,7 @@ void Window::DrawMesh(Mesh mesh)
 	glUseProgram(this->program_id);
 	glBindVertexArray(mesh.vaoId);
 	
-	glm::mat4 modelMatrix = CalcModelFromMesh(mesh);
+	CalcModelFromMesh(mesh);
 
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniform1i(render_as_black_uniform, false);

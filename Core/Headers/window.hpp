@@ -23,7 +23,6 @@ class Window
 private:
     GLFWwindow* window;
     glm::vec2 size;
-    float screenRatio;
     GLuint program_id;
 	Camera currentCamera;
 	glm::mat4 projectionMatrix;
@@ -35,11 +34,12 @@ private:
 	GLint render_as_black_uniform;
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
-	glm::mat4 CalcViewMatrix();
-	glm::mat4 CalcProjectionMatrix();
+	void CalcViewMatrix();
+	void CalcProjectionMatrix();
+	void CalcModelFromMesh(Mesh mesh);
 	
+	// Callback pra quando a janela for redimensionada
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
-	static glm::mat4 CalcModelFromMesh(Mesh mesh);
 	// Função auxiliar para gerar as matrizes bizarras do glm
 	static glm::mat4 MakeGlmMatrix(
 		float m00, float m01, float m02, float m03,
@@ -66,5 +66,6 @@ public:
 	void SetCamera(Camera camera);
 	// Coisas que precisam ser feitas antes de desenhar (limpar a tela e calcular matrizes de view e projection)
 	void PreDrawing(Color clearColor);
+	float GetScreenRatio();
 };
 #endif
