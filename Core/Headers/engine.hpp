@@ -4,7 +4,7 @@
 class Engine
 {
     public:
-        void Initialize();
+        Engine();
         void Terminate();
 };
 

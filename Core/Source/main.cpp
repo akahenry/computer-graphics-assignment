@@ -6,16 +6,15 @@
 
 int main()
 {
-    Engine engine;
-    engine.Initialize();
+    Engine engine = Engine();
 
     Window window = Window(800, 600, "test");
 
-	Camera camera = Camera();
-	window.SetCamera(camera);
-
 	Mesh box;
 	box.MakeBox(Vector3(0, 0, 5), Vector3(2, 2, 2));
+
+	Camera camera = Camera();
+	window.SetCamera(camera);
 
     while (!window.ShouldClose())
     {
@@ -24,6 +23,8 @@ int main()
 		window.DrawText("Texto de teste", 0.5, 0.5);
         window.PollEvents();
     }
+
+	engine.Terminate();
 
     // Fim do programa
     return 0;

@@ -17,7 +17,7 @@ public:
 	float fov; // angulo do campo de visão da câmera
 	int lookType; // Look-At ou Free Camera
 
-	Camera(Vector3 position=Vector3(0,0,0), float near=0.01, float far=10, float fov=3.1416/2, float horizontalAngle=0, float verticalAngle=0, int lookType=Camera::TYPE_FREE_CAMERA);
+	Camera(Vector3 position=Vector3(0,0,0), float near=-0.1f, float far=-10.0f, float fov=3.141592/2, float horizontalAngle=0, float verticalAngle=0, int lookType=Camera::TYPE_FREE_CAMERA);
 	Vector3 getViewVector();
 	// também conhecido como V
 	Vector3 getRelativeUpVector();

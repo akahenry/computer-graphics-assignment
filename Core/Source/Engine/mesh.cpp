@@ -37,14 +37,14 @@ void Mesh::MakeBox(Vector3 position, Vector3 size)
 		0, 1, 2,
 		2, 1, 3,
 		// trás
-		4, 5, 6,
-		6, 5, 7,
+		6, 5, 4,
+		7, 5, 6,
 		// cima
 		2, 3, 6,
 		6, 3, 7,
 		// baixo
-		0, 1, 4,
-		4, 1, 5,
+		4, 1, 0,
+		5, 1, 4,
 		// esquerda
 		4, 0, 6,
 		6, 0, 2,

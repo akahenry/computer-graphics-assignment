@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <vector3.hpp>
+#include <iostream>
 
 class Mesh
 {

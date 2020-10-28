@@ -11,7 +11,7 @@
 #include <engine.hpp>
 
 
-void Engine::Initialize()
+Engine::Engine()
 {
     // Inicializamos a biblioteca GLFW, utilizada para criar uma janela do
     // sistema operacional, onde poderemos renderizar com OpenGL.

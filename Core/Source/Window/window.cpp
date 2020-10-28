@@ -114,7 +114,7 @@ void Window::CalcProjectionMatrix()
 	float f = currentCamera.farPlane;
 	float fov = currentCamera.fov;
 
-	float t = fabs(currentCamera.nearPlane) * tanf(this->currentCamera.fov / 2.0f);
+	float t = fabs(n) * tanf(fov / 2.0f);
 	float b = -t;
 	float r = t * GetScreenRatio();
 	float l = -r;
@@ -202,8 +202,9 @@ void Window::DrawMesh(Mesh mesh)
 		mesh.renderingMode,
 		mesh.numIndices,
 		GL_UNSIGNED_INT,
-		(void*)0
+		0
 	);
+	glBindVertexArray(0);
 }
 
 void Window::SetCamera(Camera camera)
