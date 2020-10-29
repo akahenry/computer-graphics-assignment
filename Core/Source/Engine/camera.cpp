@@ -19,7 +19,7 @@ Vector3 Camera::getViewVector()
 
 	if (this->lookType == Camera::TYPE_FREE_CAMERA)
 	{
-		return Vector3(-vx, -vy, -vz);
+		return Vector3(vx, vy, vz);
 	}
 }
 

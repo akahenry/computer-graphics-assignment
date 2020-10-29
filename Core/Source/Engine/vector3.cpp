@@ -57,3 +57,8 @@ Vector3 Vector3::operator/(float num)
 {
 	return Vector3(x/num, y/num, z/num);
 }
+
+Vector3 Vector3::operator*(float num)
+{
+	return Vector3(x * num, y * num, z * num);
+}

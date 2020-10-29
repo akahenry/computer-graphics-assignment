@@ -101,9 +101,9 @@ void Window::CalcViewMatrix()
 	Vector3 w = currentCamera.getRelativeBackVector();
 
 	this->viewMatrix = Window::MakeGlmMatrix(
-		u.x , u.y , u.z , (-u).DotProduct(currentCamera.position),
-		v.x , v.y , v.z , (-v).DotProduct(currentCamera.position),
-		w.x , w.y , w.z , (-w).DotProduct(currentCamera.position),
+		u.x , u.y , u.z , -u.DotProduct(currentCamera.position),
+		v.x , v.y , v.z , -v.DotProduct(currentCamera.position),
+		w.x , w.y , w.z , -w.DotProduct(currentCamera.position),
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 }
@@ -120,10 +120,10 @@ void Window::CalcProjectionMatrix()
 	float l = -r;
 
 	glm::mat4 M = MakeGlmMatrix(
-		2/(r-l), 0.0f	, 0.0f	 , -(r+l)/(r-l),
-        0.0f   , 2/(t-b), 0.0f	 , -(t+b)/(t-b),
-        0.0f   , 0.0f	, 2/(f-n), -(f+n)/(f-n),
-        0.0f   , 0.0f	, 0.0f	 , 1.0f
+		2.0f/(r-l), 0.0f	  , 0.0f	  , -(r+l)/(r-l),
+        0.0f	  , 2.0f/(t-b), 0.0f	  , -(t+b)/(t-b),
+        0.0f	  , 0.0f	  , 2.0f/(f-n), -(f+n)/(f-n),
+        0.0f	  , 0.0f	  , 0.0f	  , 1.0f
 	);
 
 	glm::mat4 P = MakeGlmMatrix(
@@ -175,6 +175,9 @@ void Window::CalcModelFromMesh(Mesh mesh)
 
 void Window::PreDrawing(Color clearColor)
 {
+	// Pedimos para a GPU utilizar o programa de GPU criado no construtor
+	glUseProgram(this->program_id);
+
 	this->ClearWindow(clearColor);
 	this->CalcViewMatrix();
 	this->CalcProjectionMatrix();
@@ -186,12 +189,11 @@ void Window::PreDrawing(Color clearColor)
 void Window::DrawText(const std::string str, float x, float y, float scale)
 {
 	TextRendering_PrintString(this->window, str, x, y, scale);
+	TextRendering_PrintMatrix(this->window, this->projectionMatrix, -1, 0.9);
 }
 
 void Window::DrawMesh(Mesh mesh)
 {
-	// Pedimos para a GPU utilizar o programa de GPU criado no construtor
-	glUseProgram(this->program_id);
 	glBindVertexArray(mesh.vaoId);
 	
 	CalcModelFromMesh(mesh);
