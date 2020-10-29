@@ -5,16 +5,16 @@ void Mesh::MakeBox(Vector3 position, Vector3 size)
 	this->position = position;
 	GLfloat model_coefficients[] = {
 		// Vértices da frente
-		0		  , 0		  , 0, 1.0f,
-		0 + size.x, 0		  , 0, 1.0f,
-		0		  , 0 + size.y, 0, 1.0f,
-		0 + size.x, 0 + size.y, 0, 1.0f,
+		0 - size.x/2, 0 - size.y/2, 0 + size.z/2, 1.0f,
+		0 + size.x/2, 0	- size.y/2, 0 + size.z/2, 1.0f,
+		0 - size.x/2, 0 + size.y/2, 0 + size.z/2, 1.0f,
+		0 + size.x/2, 0 + size.y/2, 0 + size.z/2, 1.0f,
 
 		// Vértices de trás
-		0		  , 0		  , 0 + size.z, 1.0f,
-		0 + size.x, 0		  , 0 + size.z, 1.0f,
-		0		  , 0 + size.y, 0 + size.z, 1.0f,
-		0 + size.x, 0 + size.y, 0 + size.z, 1.0f,
+		0 - size.x/2, 0	- size.y/2, 0 - size.z/2, 1.0f,
+		0 + size.x/2, 0	- size.y/2, 0 - size.z/2, 1.0f,
+		0 - size.x/2, 0 + size.y/2, 0 - size.z/2, 1.0f,
+		0 + size.x/2, 0 + size.y/2, 0 - size.z/2, 1.0f,
 	};
 	this->model_coefficients = model_coefficients;
 	this->numVerticesComponents = sizeof(model_coefficients) / sizeof(model_coefficients[0]);

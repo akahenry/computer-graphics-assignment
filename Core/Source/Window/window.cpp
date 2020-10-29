@@ -189,7 +189,6 @@ void Window::PreDrawing(Color clearColor)
 void Window::DrawText(const std::string str, float x, float y, float scale)
 {
 	TextRendering_PrintString(this->window, str, x, y, scale);
-	TextRendering_PrintMatrix(this->window, this->projectionMatrix, -1, 0.9);
 }
 
 void Window::DrawMesh(Mesh mesh)
