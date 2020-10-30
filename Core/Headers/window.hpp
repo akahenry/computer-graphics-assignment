@@ -24,7 +24,7 @@ private:
     GLFWwindow* window;
     glm::vec2 size;
     GLuint program_id;
-	Camera currentCamera;
+	Camera* currentCamera;
 	glm::mat4 projectionMatrix;
 	glm::mat4 modelMatrix;
 	glm::mat4 viewMatrix;
@@ -63,7 +63,7 @@ public:
     void ClearWindow(Color color);
 	void DrawText(const std::string str, float x, float y, float scale = 1.0f);
 	void DrawMesh(Mesh mesh);
-	void SetCamera(Camera camera);
+	void SetCamera(Camera* camera);
 	// Coisas que precisam ser feitas antes de desenhar (limpar a tela e calcular matrizes de view e projection)
 	void PreDrawing(Color clearColor);
 	float GetScreenRatio();

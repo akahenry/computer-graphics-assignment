@@ -96,23 +96,23 @@ void Window::ClearWindow(Color color)
 
 void Window::CalcViewMatrix()
 {
-	Vector3 u = currentCamera.getRelativeRightVector();
-	Vector3 v = currentCamera.getRelativeUpVector();
-	Vector3 w = currentCamera.getRelativeBackVector();
+	Vector3 u = currentCamera->getRelativeRightVector();
+	Vector3 v = currentCamera->getRelativeUpVector();
+	Vector3 w = currentCamera->getRelativeBackVector();
 
 	this->viewMatrix = Window::MakeGlmMatrix(
-		u.x , u.y , u.z , -u.DotProduct(currentCamera.position),
-		v.x , v.y , v.z , -v.DotProduct(currentCamera.position),
-		w.x , w.y , w.z , -w.DotProduct(currentCamera.position),
+		u.x , u.y , u.z , -u.DotProduct(currentCamera->position),
+		v.x , v.y , v.z , -v.DotProduct(currentCamera->position),
+		w.x , w.y , w.z , -w.DotProduct(currentCamera->position),
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 }
 
 void Window::CalcProjectionMatrix()
 {
-	float n = currentCamera.nearPlane;
-	float f = currentCamera.farPlane;
-	float fov = currentCamera.fov;
+	float n = currentCamera->nearPlane;
+	float f = currentCamera->farPlane;
+	float fov = currentCamera->fov;
 
 	float t = fabs(n) * tanf(fov / 2.0f);
 	float b = -t;
@@ -208,7 +208,7 @@ void Window::DrawMesh(Mesh mesh)
 	glBindVertexArray(0);
 }
 
-void Window::SetCamera(Camera camera)
+void Window::SetCamera(Camera* camera)
 {
 	this->currentCamera = camera;
 }

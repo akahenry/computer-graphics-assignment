@@ -1,38 +1,5 @@
 #include <camera.hpp>
 
-Camera::Camera(int lookType, Vector3 position, Vector3 pointToLookAt, float near, float far, float fov, float horizontalAngle, float verticalAngle)
-{
-	this->position = position;
-	this->horizontalAngle = horizontalAngle;
-	this->verticalAngle = verticalAngle;
-	this->lookType = lookType;
-	this->nearPlane = near;
-	this->farPlane = far;
-	this->fov = fov;
-
-	if (this->lookType == Camera::TYPE_LOOK_AT)
-	{
-		this->pointToLookAt = pointToLookAt;
-	}
-}
-
-Vector3 Camera::getViewVector()
-{
-	float vx = cos(this->verticalAngle) * sin(this->horizontalAngle);
-	float vz = cos(this->verticalAngle) * cos(this->horizontalAngle);
-	float vy = sin(this->verticalAngle);
-
-	if (this->lookType == Camera::TYPE_FREE_CAMERA)
-	{
-		return Vector3(vx, vy, vz);
-	}
-	
-	if (this->lookType == Camera::TYPE_LOOK_AT)
-	{
-		return this->pointToLookAt - this->position;
-	}
-}
-
 Vector3 Camera::getRelativeBackVector()
 {
 	Vector3 view = getViewVector();
@@ -49,4 +16,37 @@ Vector3 Camera::getRelativeRightVector()
 Vector3 Camera::getRelativeUpVector()
 {
 	return getRelativeBackVector().CrossProduct(getRelativeRightVector());
+}
+
+Camera::Camera(Vector3 position, float near, float far, float fov)
+{
+	this->position = position;
+	this->nearPlane = near;
+	this->farPlane = far;
+	this->fov = fov;
+}
+
+FreeCamera::FreeCamera(Vector3 position, float near, float far, float fov, float horizontalAngle, float verticalAngle) : Camera(position, near, far, fov)
+{
+	this->horizontalAngle = horizontalAngle;
+	this->verticalAngle = verticalAngle;
+}
+
+Vector3 FreeCamera::getViewVector()
+{
+	float vx = cos(this->verticalAngle) * sin(this->horizontalAngle);
+	float vz = cos(this->verticalAngle) * cos(this->horizontalAngle);
+	float vy = sin(this->verticalAngle);
+
+	return Vector3(vx, vy, vz);
+}
+
+LookAtCamera::LookAtCamera(Vector3 pointToLookAt, Vector3 position, float near, float far, float fov) : Camera(position, near, far, fov)
+{
+	this->pointToLookAt = pointToLookAt;
+}
+
+Vector3 LookAtCamera::getViewVector()
+{
+	return this->pointToLookAt - this->position;
 }

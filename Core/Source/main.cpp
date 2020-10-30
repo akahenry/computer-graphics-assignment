@@ -14,8 +14,8 @@ int main()
 	box.MakeBox(Vector3(0, 0, -5), Vector3(2, 2, 2));
 	box.rotationAxis = Vector3(0, 1.0, 0);
 
-	Camera camera = Camera(Camera::TYPE_LOOK_AT, Vector3(0, 0, 0), Vector3(0, 1, -2));
-	window.SetCamera(camera);
+	LookAtCamera camera = LookAtCamera(box.position);
+	window.SetCamera(&camera);
 
 	float t = 0;
 
