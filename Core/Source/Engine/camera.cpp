@@ -1,6 +1,6 @@
 #include <camera.hpp>
 
-Camera::Camera(Vector3 position, float near, float far, float fov, float horizontalAngle, float verticalAngle, int lookType)
+Camera::Camera(int lookType, Vector3 position, Vector3 pointToLookAt, float near, float far, float fov, float horizontalAngle, float verticalAngle)
 {
 	this->position = position;
 	this->horizontalAngle = horizontalAngle;
@@ -9,6 +9,11 @@ Camera::Camera(Vector3 position, float near, float far, float fov, float horizon
 	this->nearPlane = near;
 	this->farPlane = far;
 	this->fov = fov;
+
+	if (this->lookType == Camera::TYPE_LOOK_AT)
+	{
+		this->pointToLookAt = pointToLookAt;
+	}
 }
 
 Vector3 Camera::getViewVector()
@@ -20,6 +25,11 @@ Vector3 Camera::getViewVector()
 	if (this->lookType == Camera::TYPE_FREE_CAMERA)
 	{
 		return Vector3(vx, vy, vz);
+	}
+	
+	if (this->lookType == Camera::TYPE_LOOK_AT)
+	{
+		return this->pointToLookAt - this->position;
 	}
 }
 
