@@ -18,6 +18,11 @@ Vector3 Camera::getRelativeUpVector()
 	return getRelativeBackVector().CrossProduct(getRelativeRightVector());
 }
 
+void Camera::MoveCameraRelatively(Vector3 delta)
+{
+	position = position + getRelativeRightVector() * delta.x + getRelativeUpVector() * delta.y + getRelativeBackVector() * delta.z * -1;
+}
+
 Camera::Camera(Vector3 position, float near, float far, float fov)
 {
 	this->position = position;
@@ -49,4 +54,10 @@ LookAtCamera::LookAtCamera(Vector3 pointToLookAt, Vector3 position, float near, 
 Vector3 LookAtCamera::getViewVector()
 {
 	return this->pointToLookAt - this->position;
+}
+
+void FreeCamera::MoveCameraAngle(Vector2 deltaAngle)
+{
+	horizontalAngle += deltaAngle.x;
+	verticalAngle += deltaAngle.y;
 }

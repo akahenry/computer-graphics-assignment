@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector3.hpp>
+#include <vector.hpp>
 #include <cmath>
 #define PI 3.141592653589793238462643383279502884L
 
@@ -15,11 +15,10 @@ public:
 	Camera(Vector3 position, float near, float far, float);
 
 	virtual Vector3 getViewVector() = 0;
-	Vector3 getRelativeUpVector();
-	// também conhecido como U
-	Vector3 getRelativeRightVector();
-	// também conhecido como W
-	Vector3 getRelativeBackVector();
+	Vector3 getRelativeUpVector(); // também conhecido como V
+	Vector3 getRelativeRightVector(); // também conhecido como U
+	Vector3 getRelativeBackVector(); // também conhecido como W
+	void MoveCameraRelatively(Vector3 delta); // valores positivos do Vector3: direita, cima, frente
 };
 
 class FreeCamera : public Camera
@@ -29,6 +28,7 @@ public:
 	float verticalAngle; // rotação do eixo horizontal, vai de -pi/2 a pi/2, 0 olha para o horizonte
 
 	FreeCamera(Vector3 position = Vector3(0, 0, 0), float near = -0.1f, float far = -10.0f, float fov = PI / 2, float horizontalAngle = PI, float verticalAngle = 0);
+	void MoveCameraAngle(Vector2 deltaAngle);
 
 	Vector3 getViewVector();
 };

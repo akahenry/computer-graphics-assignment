@@ -23,10 +23,11 @@
     <ClInclude Include="Core\Headers\color.hpp" />
     <ClInclude Include="Core\Headers\engine.hpp" />
     <ClInclude Include="Core\Headers\error.hpp" />
+    <ClInclude Include="Core\Headers\input.hpp" />
     <ClInclude Include="Core\Headers\mesh.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
-    <ClInclude Include="Core\Headers\vector3.hpp" />
+    <ClInclude Include="Core\Headers\vector.hpp" />
     <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
     <ClInclude Include="Include\utils.h" />
@@ -36,10 +37,11 @@
     <ClCompile Include="Core\Source\Engine\color.cpp" />
     <ClCompile Include="Core\Source\Engine\engine.cpp" />
     <ClCompile Include="Core\Source\Engine\error.cpp" />
+    <ClCompile Include="Core\Source\Engine\input.cpp" />
     <ClCompile Include="Core\Source\Engine\mesh.cpp" />
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />
-    <ClCompile Include="Core\Source\Engine\vector3.cpp" />
+    <ClCompile Include="Core\Source\Engine\vector.cpp" />
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />
     <ClCompile Include="Include\glad\glad.c" />

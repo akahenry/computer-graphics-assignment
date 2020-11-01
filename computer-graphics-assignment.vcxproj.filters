@@ -51,10 +51,13 @@
     <ClInclude Include="Core\Headers\mesh.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Headers\vector3.hpp">
+    <ClInclude Include="Core\Headers\color.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Headers\color.hpp">
+    <ClInclude Include="Core\Headers\input.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\vector.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -86,10 +89,13 @@
     <ClCompile Include="Core\Source\Engine\mesh.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Source\Engine\vector3.cpp">
+    <ClCompile Include="Core\Source\Engine\color.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Source\Engine\color.cpp">
+    <ClCompile Include="Core\Source\Engine\input.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\vector.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
   </ItemGroup>

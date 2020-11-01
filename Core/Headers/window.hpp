@@ -17,6 +17,11 @@
 #include <mesh.hpp>
 #include <camera.hpp>
 #include <color.hpp>
+#include <input.hpp>
+
+#define CURSOR_NORMAL GLFW_CURSOR_NORMAL
+#define CURSOR_HIDDEN GLFW_CURSOR_HIDDEN
+#define CURSOR_DISABLED GLFW_CURSOR_DISABLED
 
 class Window
 {
@@ -67,5 +72,6 @@ public:
 	// Coisas que precisam ser feitas antes de desenhar (limpar a tela e calcular matrizes de view e projection)
 	void PreDrawing(Color clearColor);
 	float GetScreenRatio();
+	void SetCursorType(int type);
 };
 #endif

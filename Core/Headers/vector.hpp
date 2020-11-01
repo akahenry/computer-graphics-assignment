@@ -20,3 +20,19 @@ class Vector3
 		Vector3 operator*(float num);
 };
 
+class Vector2
+{
+public:
+	float x;
+	float y;
+
+	Vector2(float x = 0, float y = 0);
+	float Norm();
+	Vector2 Normalized();
+	float DotProduct(Vector2 other);
+	Vector2 operator+(const Vector2 other);
+	Vector2 operator-(const Vector2 other);
+	Vector2 operator-();
+	Vector2 operator/(float num);
+	Vector2 operator*(float num);
+};

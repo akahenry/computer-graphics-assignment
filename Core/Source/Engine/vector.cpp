@@ -1,4 +1,4 @@
-#include <vector3.hpp>
+#include <vector.hpp>
 
 Vector3::Vector3(float x, float y, float z)
 {
@@ -61,4 +61,52 @@ Vector3 Vector3::operator/(float num)
 Vector3 Vector3::operator*(float num)
 {
 	return Vector3(x * num, y * num, z * num);
+}
+
+/***************** Vector2 *********************/
+
+Vector2::Vector2(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+float Vector2::Norm()
+{
+	return sqrt(x * x + y * y);
+}
+
+Vector2 Vector2::Normalized()
+{
+	return Vector2(x, y) / Norm();
+}
+
+float Vector2::DotProduct(Vector2 other)
+{
+	return x * other.x + y * other.y;
+}
+
+Vector2 Vector2::operator+(const Vector2 other)
+{
+	return Vector2(x + other.x, y + other.y);
+}
+
+Vector2 Vector2::operator-(const Vector2 other)
+{
+	return Vector2(x - other.x, y - other.y);
+}
+
+Vector2 Vector2::operator-()
+{
+	return Vector2(-x, -y);
+}
+
+Vector2 Vector2::operator/(float num)
+{
+	return Vector2(x / num, y / num);
+}
+
+Vector2 Vector2::operator*(float num)
+{
+	return Vector2(x * num, y * num);
 }

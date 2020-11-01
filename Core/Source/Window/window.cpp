@@ -15,11 +15,11 @@ Window::Window(int width, int height, const char* name)
 	// redimensionar a tela ...
 	SetFrameBufferSizeCallback(&FramebufferSizeCallback);
 	// ... ou pressionar alguma tecla do teclado ...
-	//glfwSetKeyCallback(window, KeyCallback);
+	glfwSetKeyCallback(window, &Input::Keyboard::KeyboardButtonCallback);
 	// ... ou clicar os botões do mouse ...
-	//glfwSetMouseButtonCallback(window, MouseButtonCallback);
+	glfwSetMouseButtonCallback(window, &Input::Mouse::MouseButtonCallback);
 	// ... ou movimentar o cursor do mouse em cima da janela ...
-	//glfwSetCursorPosCallback(window, CursorPosCallback);
+	glfwSetCursorPosCallback(window, &Input::Mouse::CursorPosCallback);
 	// ... ou rolar a "rodinha" do mouse.
 	//glfwSetScrollCallback(window, ScrollCallback);
 
@@ -84,6 +84,7 @@ void Window::PollEvents()
     // Mostra o buffer que tem a tela desenhada no último frame (necessário fazer esse swap pra não ter screen tearing)
     glfwSwapBuffers(this->window);
     glfwPollEvents();
+	Input::PollInputEvents();
 }
 
 void Window::ClearWindow(Color color)
@@ -211,4 +212,9 @@ void Window::DrawMesh(Mesh mesh)
 void Window::SetCamera(Camera* camera)
 {
 	this->currentCamera = camera;
+}
+
+void Window::SetCursorType(int type)
+{
+	glfwSetInputMode(window, GLFW_CURSOR, type);
 }
