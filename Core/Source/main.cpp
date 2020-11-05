@@ -6,17 +6,23 @@
 
 int main()
 {
-    Engine engine = Engine();
+	Engine engine = Engine();
 
-    Window window = Window(800, 600, "test");
-	//window.SetCursorType(CURSOR_DISABLED);
+	Window window = Window(800, 600, "The Labyrinth");
 
 	Mesh box;
-	box.MakeBox(Vector3(0, 0, -5), Vector3(2, 2, 2));
-	box.rotationAxis = Vector3(0, 1.0, 0);
+	box.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
+	box.rotationAxis = {0, 1.0, 0};
 
-	FreeCamera camera = FreeCamera();
+	Mesh ground;
+	ground.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
+
+	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
+
+	Scene scene1;
+	scene1.AddMesh(&box);
+	scene1.AddMesh(&ground);
 
 	float t = 0;
 	bool buttonPressed = false;
@@ -70,7 +76,7 @@ int main()
 		buttonPressedLastFrame = buttonPressed;
 
 		window.PreDrawing(Color(1.0,1.0,1.0,1.0));
-		window.DrawMesh(box);
+		window.DrawScene(scene1);
         window.PollEvents();
     }
 

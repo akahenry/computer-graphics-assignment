@@ -60,6 +60,9 @@
     <ClInclude Include="Core\Headers\vector.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Headers\scene.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Source\Engine\engine.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Core\Source\Engine\vector.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\scene.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
   </ItemGroup>

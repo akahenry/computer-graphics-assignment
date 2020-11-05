@@ -18,6 +18,7 @@
 #include <camera.hpp>
 #include <color.hpp>
 #include <input.hpp>
+#include <scene.hpp>
 
 #define CURSOR_NORMAL GLFW_CURSOR_NORMAL
 #define CURSOR_HIDDEN GLFW_CURSOR_HIDDEN
@@ -73,5 +74,6 @@ public:
 	void PreDrawing(Color clearColor);
 	float GetScreenRatio();
 	void SetCursorType(int type);
+	void DrawScene(Scene scene);
 };
 #endif

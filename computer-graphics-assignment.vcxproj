@@ -25,6 +25,7 @@
     <ClInclude Include="Core\Headers\error.hpp" />
     <ClInclude Include="Core\Headers\input.hpp" />
     <ClInclude Include="Core\Headers\mesh.hpp" />
+    <ClInclude Include="Core\Headers\scene.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
     <ClInclude Include="Core\Headers\vector.hpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Core\Source\Engine\error.cpp" />
     <ClCompile Include="Core\Source\Engine\input.cpp" />
     <ClCompile Include="Core\Source\Engine\mesh.cpp" />
+    <ClCompile Include="Core\Source\Engine\scene.cpp" />
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />
     <ClCompile Include="Core\Source\Engine\vector.cpp" />

@@ -218,3 +218,11 @@ void Window::SetCursorType(int type)
 {
 	glfwSetInputMode(window, GLFW_CURSOR, type);
 }
+
+void Window::DrawScene(Scene scene)
+{
+	for (Mesh* mesh : scene.meshList)
+	{
+		this->DrawMesh(*mesh);
+	}
+}
