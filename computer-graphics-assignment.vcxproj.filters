@@ -22,6 +22,9 @@
     <Filter Include="Resource files\glad">
       <UniqueIdentifier>{6a0cf8b0-c991-47d1-8fc2-4b90e35738b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource files\tiny_obj_loader">
+      <UniqueIdentifier>{2ceb040e-72e6-48e7-8a70-4ce77ff3b47d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\dejavufont.h">
@@ -63,6 +66,12 @@
     <ClInclude Include="Core\Headers\scene.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Include\tiny_obj_loader\stb_image.h">
+      <Filter>Resource files\tiny_obj_loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\tiny_obj_loader\tiny_obj_loader.h">
+      <Filter>Resource files\tiny_obj_loader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Source\Engine\engine.cpp">
@@ -103,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="Core\Source\Engine\scene.cpp">
       <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\tiny_obj_loader\stb_image.cpp">
+      <Filter>Resource files\tiny_obj_loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\tiny_obj_loader\tiny_obj_loader.cpp">
+      <Filter>Resource files\tiny_obj_loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

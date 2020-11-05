@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <vector.hpp>
 #include <iostream>
+#include <tiny_obj_loader/tiny_obj_loader.h>
+#include <tiny_obj_loader/stb_image.h>
+#include <algorithm>
 
 class Mesh
 {
@@ -17,6 +20,7 @@ public:
 	int numIndices; // Quantidade de indices no vetor indices
 
 	void MakeBox(Vector3 position, Vector3 size);
+	void LoadFromObj(Vector3 position, const char* filename, const char* basepath = NULL);
 
 private:
 	GLfloat* model_coefficients; // Array com posições dos vértices

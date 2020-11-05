@@ -31,6 +31,8 @@
     <ClInclude Include="Core\Headers\vector.hpp" />
     <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
+    <ClInclude Include="Include\tiny_obj_loader\stb_image.h" />
+    <ClInclude Include="Include\tiny_obj_loader\tiny_obj_loader.h" />
     <ClInclude Include="Include\utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +49,8 @@
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
+    <ClCompile Include="Include\tiny_obj_loader\stb_image.cpp" />
+    <ClCompile Include="Include\tiny_obj_loader\tiny_obj_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Include\shader_fragment.glsl" />

@@ -60,6 +60,69 @@ void Mesh::MakeBox(Vector3 position, Vector3 size)
 	this->BindVao();
 }
 
+void Mesh::LoadFromObj(Vector3 position, const char* filename, const char* basepath)
+{
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+
+	std::string err;
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, true);
+
+	if (!err.empty())
+		fprintf(stderr, "\n%s\n", err.c_str());
+
+	if (!ret)
+		throw std::runtime_error("Erro ao carregar modelo.");
+
+	std::vector<GLuint> indices;
+	std::vector<float> model_coefficients;
+	std::vector<float> color_coefficients;
+
+	size_t first_index = indices.size();
+	size_t num_triangles = shapes[0].mesh.num_face_vertices.size();
+
+	for (size_t triangle = 0; triangle < num_triangles; ++triangle)
+	{
+		if (shapes[0].mesh.num_face_vertices[triangle] != 3)
+			throw std::exception("ih rapaiz tem q ser tudo triangulo tlg");
+
+		for (size_t vertex = 0; vertex < 3; ++vertex)
+		{
+			tinyobj::index_t idx = shapes[0].mesh.indices[3 * triangle + vertex];
+
+			indices.push_back(first_index + 3 * triangle + vertex);
+
+			const float vx = attrib.vertices[3 * idx.vertex_index + 0];
+			const float vy = attrib.vertices[3 * idx.vertex_index + 1];
+			const float vz = attrib.vertices[3 * idx.vertex_index + 2];
+			model_coefficients.push_back(vx); // X
+			model_coefficients.push_back(vy); // Y
+			model_coefficients.push_back(vz); // Z
+			model_coefficients.push_back(1.0f); // W
+
+			color_coefficients.push_back(0.0f);
+			color_coefficients.push_back(0.0f);
+			color_coefficients.push_back(1.0f);
+			color_coefficients.push_back(1.0f);
+		}
+	}
+
+	this->position = position;
+
+	this->model_coefficients = model_coefficients.data();
+	this->numVerticesComponents = model_coefficients.size();
+
+	this->color_coefficients = color_coefficients.data();
+
+	this->indices = indices.data();
+	this->numIndices = indices.size();
+
+	renderingMode = GL_TRIANGLES;
+
+	this->BindVao();
+}
+
 void Mesh::BindVao()
 {
 	GLuint location;
