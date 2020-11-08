@@ -12,11 +12,14 @@ int main()
 	Window window = Window(800, 600, "The Labyrinth");
 
 	ReflectanceComponents defaultReflectance;
+	defaultReflectance.diffuse = Vector3(0.08, 0.4, 0.8);;
+	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);;
+	defaultReflectance.ambient = defaultReflectance.diffuse/2;
 
 	Mesh boxMesh;
 	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
 	boxMesh.rotationAxis = {0, 1.0, 0};
-	GraphicObject box(&boxMesh, defaultReflectance, 1);
+	GraphicObject box(&boxMesh, defaultReflectance, 32);
 
 	Mesh groundMesh;
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });

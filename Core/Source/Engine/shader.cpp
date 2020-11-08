@@ -7,12 +7,12 @@ void Shader::RefreshIllumination()
     GLuint ambient_spectrum_id = glGetUniformLocation(program_id, "ambient_spectrum"); // Espectro da luz ambiente
 
     glm::vec4 light_position = { this->illumination.position.x, this->illumination.position.y, this->illumination.position.z, 1.0f };
-    glm::vec4 source_spectrum = { this->illumination.lightSpectrum.x, this->illumination.lightSpectrum.y, this->illumination.lightSpectrum.z, 0.0f };
-    glm::vec4 ambient_spectrum = { this->illumination.ambientSpectrum.x, this->illumination.ambientSpectrum.y, this->illumination.ambientSpectrum.z, 0.0f };
+    glm::vec3 source_spectrum = { this->illumination.lightSpectrum.x, this->illumination.lightSpectrum.y, this->illumination.lightSpectrum.z };
+    glm::vec3 ambient_spectrum = { this->illumination.ambientSpectrum.x, this->illumination.ambientSpectrum.y, this->illumination.ambientSpectrum.z };
 
     glUniform4fv(light_position_id, 1, glm::value_ptr(light_position));
-    glUniform4fv(source_spectrum_id, 1, glm::value_ptr(source_spectrum));
-    glUniform4fv(ambient_spectrum_id, 1, glm::value_ptr(ambient_spectrum));
+    glUniform3fv(source_spectrum_id, 1, glm::value_ptr(source_spectrum));
+    glUniform3fv(ambient_spectrum_id, 1, glm::value_ptr(ambient_spectrum));
 }
 
 Shader::Shader(const char* vertex_shader_filename, const char* fragment_shader_filename)
