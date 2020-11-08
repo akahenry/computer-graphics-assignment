@@ -1,6 +1,6 @@
 #include <window.hpp>
 
-Window::Window(int width, int height, const char* name)
+Window::Window(int width, int height, const char* name, Shader shader)
 {
 	this->window = glfwCreateWindow(width, height, name, NULL, NULL);
 	if (!this->window)
@@ -11,35 +11,37 @@ Window::Window(int width, int height, const char* name)
 	}
 	this->size = glm::vec2(width, height);
 
-	// Definimos a função de callback que será chamada sempre que o usuário
+	// Definimos a funï¿½ï¿½o de callback que serï¿½ chamada sempre que o usuï¿½rio
 	// redimensionar a tela ...
 	SetFrameBufferSizeCallback(&FramebufferSizeCallback);
 	// ... ou pressionar alguma tecla do teclado ...
 	glfwSetKeyCallback(window, &Input::Keyboard::KeyboardButtonCallback);
-	// ... ou clicar os botões do mouse ...
+	// ... ou clicar os botï¿½es do mouse ...
 	glfwSetMouseButtonCallback(window, &Input::Mouse::MouseButtonCallback);
 	// ... ou movimentar o cursor do mouse em cima da janela ...
 	glfwSetCursorPosCallback(window, &Input::Mouse::CursorPosCallback);
 	// ... ou rolar a "rodinha" do mouse.
 	//glfwSetScrollCallback(window, ScrollCallback);
 
-	// Indicamos que as chamadas OpenGL deverão renderizar nesta janela
+	// Indicamos que as chamadas OpenGL deverï¿½o renderizar nesta janela
 	glfwMakeContextCurrent(this->window);
 
-	// Carregamento de todas funções definidas por OpenGL 3.3, utilizando a
+	// Carregamento de todas funï¿½ï¿½es definidas por OpenGL 3.3, utilizando a
 	// biblioteca GLAD.
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-	GLuint vertex_shader_id = LoadShader_Vertex("shader_vertex.glsl");
-	GLuint fragment_shader_id = LoadShader_Fragment("shader_fragment.glsl");
+	this->shader = shader;
+
+	GLuint vertex_shader_id = this->shader.vertex_shader_id;
+	GLuint fragment_shader_id = this->shader.fragment_shader_id;
 
 	// Criamos um programa de GPU utilizando os shaders carregados acima
-	this->program_id = CreateGpuProgram(vertex_shader_id, fragment_shader_id);
+	this->program_id = this->shader.program_id;
 
-	// Inicializamos o código para renderização de texto.
+	// Inicializamos o cï¿½digo para renderizaï¿½ï¿½o de texto.
 	TextRendering_Init();
 
-	// Buscamos o endereço das variáveis definidas dentro do Vertex Shader.
+	// Buscamos o endereï¿½o das variï¿½veis definidas dentro do Vertex Shader.
 	model_uniform = glGetUniformLocation(program_id, "model");
 	view_uniform = glGetUniformLocation(program_id, "view");
 	projection_uniform = glGetUniformLocation(program_id, "projection");
@@ -70,7 +72,7 @@ void Window::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 void Window::SetFrameBufferSizeCallback(GLFWframebuffersizefun callback)
 {
     glfwSetFramebufferSizeCallback(this->window, callback);
-	// Forçamos a chamada do callback acima, para definir g_ScreenRatio
+	// Forï¿½amos a chamada do callback acima, para definir g_ScreenRatio
     glfwSetWindowSize(this->window, size.x, size.y);
 }
 
@@ -81,7 +83,7 @@ bool Window::ShouldClose()
 
 void Window::PollEvents()
 {
-    // Mostra o buffer que tem a tela desenhada no último frame (necessário fazer esse swap pra não ter screen tearing)
+    // Mostra o buffer que tem a tela desenhada no ï¿½ltimo frame (necessï¿½rio fazer esse swap pra nï¿½o ter screen tearing)
     glfwSwapBuffers(this->window);
     glfwPollEvents();
 	Input::PollInputEvents();
@@ -156,7 +158,7 @@ void Window::CalcModelFromMesh(Mesh mesh)
 	float vy = v.y;
 	float vz = v.z;
 
-	// rotação em torno de um eixo arbitrário
+	// rotaï¿½ï¿½o em torno de um eixo arbitrï¿½rio
 	glm::mat4 R = MakeGlmMatrix(
 		vx*vx*(1-c)+c	, vx*vy*(1-c)-vz*s, vx*vz*(1-c)+vy*s, 0.0f,
         vx*vy*(1-c)+vz*s, vy*vy*(1-c)+c	  , vy*vz*(1-c)-vx*s, 0.0f,
@@ -219,10 +221,15 @@ void Window::SetCursorType(int type)
 	glfwSetInputMode(window, GLFW_CURSOR, type);
 }
 
+void Window::DrawObject(GraphicObject object)
+{
+	this->DrawMesh(*(object.mesh));
+}
+
 void Window::DrawScene(Scene scene)
 {
-	for (Mesh* mesh : scene.meshList)
+	for (GraphicObject object : scene.objectList)
 	{
-		this->DrawMesh(*mesh);
+		this->DrawObject(object);
 	}
 }

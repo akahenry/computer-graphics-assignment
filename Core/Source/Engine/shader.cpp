@@ -1,12 +1,15 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <glad/glad.h>   // Criação de contexto OpenGL 3.3
-#include <GLFW/glfw3.h> 
+#include <shader.hpp>
+
+Shader::Shader(const char* vertex_shader_filename, const char* fragment_shader_filename)
+{  
+    this->vertex_shader_id = Shader::LoadShader_Vertex(vertex_shader_filename);
+    this->fragment_shader_id = Shader::LoadShader_Fragment(fragment_shader_filename);
+    this->program_id = Shader::CreateGpuProgram(this->vertex_shader_id, this->fragment_shader_id);
+}
 
 // Função auxilar, utilizada pelas duas funções acima. Carrega código de GPU de
 // um arquivo GLSL e faz sua compilação.
-void LoadShader(const char* filename, GLuint shader_id)
+void Shader::LoadShader(const char* filename, GLuint shader_id)
 {
     // Lemos o arquivo de texto indicado pela variável "filename"
     // e colocamos seu conteúdo em memória, apontado pela variável
@@ -75,28 +78,28 @@ void LoadShader(const char* filename, GLuint shader_id)
 }
 
 // Carrega um Vertex Shader de um arquivo GLSL. Veja definição de LoadShader() abaixo.
-GLuint LoadShader_Vertex(const char* filename)
+GLuint Shader::LoadShader_Vertex(const char* filename)
 {
     // Criamos um identificador (ID) para este shader, informando que o mesmo
     // será aplicado nos vértices.
     GLuint vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
 
     // Carregamos e compilamos o shader
-    LoadShader(filename, vertex_shader_id);
+    Shader::LoadShader(filename, vertex_shader_id);
 
     // Retorna o ID gerado acima
     return vertex_shader_id;
 }
 
 // Carrega um Fragment Shader de um arquivo GLSL . Veja definição de LoadShader() abaixo.
-GLuint LoadShader_Fragment(const char* filename)
+GLuint Shader::LoadShader_Fragment(const char* filename)
 {
     // Criamos um identificador (ID) para este shader, informando que o mesmo
     // será aplicado nos fragmentos.
     GLuint fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
 
     // Carregamos e compilamos o shader
-    LoadShader(filename, fragment_shader_id);
+    Shader::LoadShader(filename, fragment_shader_id);
 
     // Retorna o ID gerado acima
     return fragment_shader_id;
@@ -104,7 +107,7 @@ GLuint LoadShader_Fragment(const char* filename)
 
 // Esta função cria um programa de GPU, o qual contém obrigatoriamente um
 // Vertex Shader e um Fragment Shader.
-GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
+GLuint Shader::CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
 {
     // Criamos um identificador (ID) para este programa de GPU
     GLuint program_id = glCreateProgram();
@@ -147,4 +150,9 @@ GLuint CreateGpuProgram(GLuint vertex_shader_id, GLuint fragment_shader_id)
 
     // Retornamos o ID gerado acima
     return program_id;
+}
+
+void Shader::SetIllumination(LightSource illumination)
+{
+    this->illumination = illumination;
 }

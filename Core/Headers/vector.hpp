@@ -14,10 +14,14 @@ class Vector3
 		Vector3 CrossProduct(Vector3 other);
 		float DotProduct(Vector3 other);
 		Vector3 operator+(const Vector3 other);
+		Vector3& operator+=(const Vector3& other);
 		Vector3 operator-(const Vector3 other);
+		Vector3& operator-=(const Vector3& other);
 		Vector3 operator-();
 		Vector3 operator/(float num);
+		Vector3& operator/=(const Vector3& other);
 		Vector3 operator*(float num);
+		Vector3& operator*=(const Vector3& other);
 };
 
 class Vector2
@@ -31,8 +35,12 @@ public:
 	Vector2 Normalized();
 	float DotProduct(Vector2 other);
 	Vector2 operator+(const Vector2 other);
+	Vector2& operator+=(const Vector2& other);
 	Vector2 operator-(const Vector2 other);
+	Vector2& operator-=(const Vector2& other);
 	Vector2 operator-();
 	Vector2 operator/(float num);
+	Vector2& operator/=(const Vector2& other);
 	Vector2 operator*(float num);
+	Vector2& operator*=(const Vector2& other);
 };

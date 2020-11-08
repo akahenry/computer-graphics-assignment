@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <vector.hpp>
 #include <iostream>
 #include <tiny_obj_loader/tiny_obj_loader.h>
@@ -16,17 +17,22 @@ public:
 	float rotationAngle = 0;
 	Vector3 rotationAxis = Vector3(0,1,0);
 	GLenum renderingMode = GL_TRIANGLES; // GL_TRIANGLES, GL_TRIANGLE_FAN ...
-	int numVerticesComponents; // Quantidade de vértices*4, um float pra cada dimensão
+	int numVerticesComponents; // Quantidade de vï¿½rtices*4, um float pra cada dimensï¿½o
+	int numNormalsComponents; // Quantidade de normais*4, um float pra cada dimensï¿½o
+	int numTextureComponents; // Quantidade de normais*2, um float pra cada dimensï¿½o
 	int numIndices; // Quantidade de indices no vetor indices
 
 	void MakeBox(Vector3 position, Vector3 size);
 	void LoadFromObj(Vector3 position, const char* filename, const char* basepath = NULL);
 
 private:
-	GLfloat* model_coefficients; // Array com posições dos vértices
-	GLfloat* color_coefficients; // Array com cores dos vértices
-	GLuint* indices; // Array que define os triângulos
+	GLfloat* model_coefficients; // Array com posiï¿½ï¿½es dos vï¿½rtices
+	GLfloat* normal_coefficients; // Array com normais dos vÃ©rtices
+	GLfloat* texture_coefficients; // Array com normais dos vÃ©rtices
+	GLfloat* color_coefficients; // Array com cores dos vï¿½rtices
+	GLuint* indices; // Array que define os triï¿½ngulos
 
-	void BindVao(); // com model_coefficients, color_coefficients, indices e rendering mode setados, constrói o mesh e seta o vaoId
+	void BindVao(); // com model_coefficients, color_coefficients, indices e rendering mode setados, constrï¿½i o mesh e seta o vaoId
+	void ComputeNormals(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, std::vector<tinyobj::material_t> &materials);
 };
 

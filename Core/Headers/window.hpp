@@ -19,6 +19,7 @@
 #include <color.hpp>
 #include <input.hpp>
 #include <scene.hpp>
+#include <object.hpp>
 
 #define CURSOR_NORMAL GLFW_CURSOR_NORMAL
 #define CURSOR_HIDDEN GLFW_CURSOR_HIDDEN
@@ -38,15 +39,17 @@ private:
 	GLint view_uniform;
 	GLint projection_uniform;
 	GLint render_as_black_uniform;
+	Shader shader;
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();
 	void CalcProjectionMatrix();
 	void CalcModelFromMesh(Mesh mesh);
+	void DrawMesh(Mesh mesh);
 	
 	// Callback pra quando a janela for redimensionada
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
-	// Função auxiliar para gerar as matrizes bizarras do glm
+	// Funï¿½ï¿½o auxiliar para gerar as matrizes bizarras do glm
 	static glm::mat4 MakeGlmMatrix(
 		float m00, float m01, float m02, float m03,
 		float m10, float m11, float m12, float m13,
@@ -63,12 +66,12 @@ private:
 	}
 
 public:
-	Window(int width, int height, const char* name);
+	Window(int width, int height, const char* name, Shader shader = Shader("shader_vertex.glsl", "shader_fragment.glsl"));
     bool ShouldClose();
     void PollEvents();
     void ClearWindow(Color color);
 	void DrawText(const std::string str, float x, float y, float scale = 1.0f);
-	void DrawMesh(Mesh mesh);
+	void DrawObject(GraphicObject object);
 	void SetCamera(Camera* camera);
 	// Coisas que precisam ser feitas antes de desenhar (limpar a tela e calcular matrizes de view e projection)
 	void PreDrawing(Color clearColor);

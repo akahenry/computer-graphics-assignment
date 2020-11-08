@@ -1,12 +1,12 @@
 #pragma once
 
 #include <vector>
-#include <mesh.hpp>
+#include <object.hpp>
 
 class Scene
 {
 public:
-	std::vector<Mesh*> meshList;
+	std::vector<GraphicObject> objectList;
 
-	void AddMesh(Mesh* mesh);
+	void AddObject(GraphicObject object);
 };

@@ -38,9 +38,27 @@ Vector3 Vector3::operator+(const Vector3 other)
 	return Vector3(x + other.x, y + other.y, z + other.z);
 }
 
+Vector3& Vector3::operator+=(const Vector3& other)
+{
+	this->x += other.x;
+	this->y += other.y;
+	this->z += other.z;
+
+	return *this;
+}
+
 Vector3 Vector3::operator-(const Vector3 other)
 {
 	return Vector3(x - other.x, y - other.y, z - other.z);
+}
+
+Vector3& Vector3::operator-=(const Vector3& other)
+{
+	this->x -= other.x;
+	this->y -= other.y;
+	this->z -= other.z;
+
+	return *this;
 }
 
 Vector3 Vector3::operator-()
@@ -53,9 +71,27 @@ Vector3 Vector3::operator/(float num)
 	return Vector3(x/num, y/num, z/num);
 }
 
+Vector3& Vector3::operator/=(const Vector3& other)
+{
+	this->x /= other.x;
+	this->y /= other.y;
+	this->z /= other.z;
+
+	return *this;
+}
+
 Vector3 Vector3::operator*(float num)
 {
 	return Vector3(x * num, y * num, z * num);
+}
+
+Vector3& Vector3::operator*=(const Vector3& other)
+{
+	this->x *= other.x;
+	this->y *= other.y;
+	this->z *= other.z;
+
+	return *this;
 }
 
 /***************** Vector2 *********************/
@@ -82,9 +118,25 @@ Vector2 Vector2::operator+(const Vector2 other)
 	return Vector2(x + other.x, y + other.y);
 }
 
+Vector3& Vector3::operator+=(const Vector3& other)
+{
+	this->x += other.x;
+	this->y += other.y;
+
+	return *this;
+}
+
 Vector2 Vector2::operator-(const Vector2 other)
 {
 	return Vector2(x - other.x, y - other.y);
+}
+
+Vector3& Vector3::operator-=(const Vector3& other)
+{
+	this->x -= other.x;
+	this->y -= other.y;
+
+	return *this;
 }
 
 Vector2 Vector2::operator-()
@@ -97,7 +149,23 @@ Vector2 Vector2::operator/(float num)
 	return Vector2(x / num, y / num);
 }
 
+Vector3& Vector3::operator/=(const Vector3& other)
+{
+	this->x /= other.x;
+	this->y /= other.y;
+
+	return *this;
+}
+
 Vector2 Vector2::operator*(float num)
 {
 	return Vector2(x * num, y * num);
+}
+
+Vector3& Vector3::operator*=(const Vector3& other)
+{
+	this->x *= other.x;
+	this->y *= other.y;
+
+	return *this;
 }
