@@ -199,6 +199,9 @@ void Window::DrawMesh(Mesh mesh)
 
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniform1i(render_as_black_uniform, false);
+
+	glUseProgram(this->defaultShader.program_id);
+
 	glDrawElements(
 		mesh.renderingMode,
 		mesh.numIndices,

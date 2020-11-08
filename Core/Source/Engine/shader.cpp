@@ -22,9 +22,6 @@ Shader::Shader(const char* vertex_shader_filename, const char* fragment_shader_f
     this->fragment_shader_id = Shader::LoadShader_Fragment(fragment_shader_filename);
     this->program_id = Engine::CreateGpuProgram(this->vertex_shader_id, this->fragment_shader_id);
 
-    // Pedimos para a GPU utilizar o programa de GPU criado no construtor
-    glUseProgram(this->program_id);
-
     this->RefreshIllumination();
 }
 
