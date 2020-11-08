@@ -14,7 +14,8 @@ class GraphicObject
 public:
     Mesh* mesh;
     ReflectanceComponents reflectance;
+    float phongExponent;
 
-    GraphicObject(Mesh* mesh);
+    GraphicObject(Mesh* mesh, ReflectanceComponents reflectance, float phong);
     void SetMesh(Mesh* mesh);
 };

@@ -39,7 +39,7 @@ private:
 	GLint view_uniform;
 	GLint projection_uniform;
 	GLint render_as_black_uniform;
-	Shader defaultShader = Shader("shader_vertex.glsl", "shader_fragment.glsl");
+	Shader defaultShader;
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();

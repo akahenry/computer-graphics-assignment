@@ -30,6 +30,8 @@ Window::Window(int width, int height, const char* name)
 	// biblioteca GLAD.
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+	this->defaultShader = Shader("shader_vertex.glsl", "shader_fragment.glsl");
+
 	GLuint vertex_shader_id = this->defaultShader.vertex_shader_id;
 	GLuint fragment_shader_id = this->defaultShader.fragment_shader_id;
 
@@ -176,9 +178,6 @@ void Window::CalcModelFromMesh(Mesh mesh)
 
 void Window::PreDrawing(Color clearColor)
 {
-	// Pedimos para a GPU utilizar o programa de GPU criado no construtor
-	glUseProgram(this->program_id);
-
 	this->ClearWindow(clearColor);
 	this->CalcViewMatrix();
 	this->CalcProjectionMatrix();
@@ -221,6 +220,21 @@ void Window::SetCursorType(int type)
 
 void Window::DrawObject(GraphicObject object)
 {
+	glm::vec3 diffuse_reflectance = { object.reflectance.diffuse.x, object.reflectance.diffuse.y, object.reflectance.diffuse.z }; // Refletância difusa
+	glm::vec3 specular_reflectance = { object.reflectance.specular.x, object.reflectance.specular.y, object.reflectance.specular.z }; // Refletância especular
+	glm::vec3 ambient_reflectance = { object.reflectance.ambient.x, object.reflectance.ambient.y, object.reflectance.ambient.z }; // Refletância ambiente
+	float phong_exponent = object.phongExponent; // Expoente especular para o modelo de iluminação de Phong
+
+	GLuint diffuse_reflectance_id = glGetUniformLocation(program_id, "diffuse_reflectance");
+	GLuint specular_reflectance_id = glGetUniformLocation(program_id, "specular_reflectance");
+	GLuint ambient_reflectance_id = glGetUniformLocation(program_id, "ambient_reflectance");
+	GLuint phong_exponent_id = glGetUniformLocation(program_id, "phong_exponent");
+
+	glUniform3fv(diffuse_reflectance_id, 1, glm::value_ptr(diffuse_reflectance));
+	glUniform3fv(specular_reflectance_id, 1, glm::value_ptr(specular_reflectance));
+	glUniform3fv(ambient_reflectance_id, 1, glm::value_ptr(ambient_reflectance));
+	glUniform1f(phong_exponent_id, phong_exponent);
+
 	this->DrawMesh(*(object.mesh));
 }
 

@@ -19,16 +19,21 @@ uniform bool render_as_black;
 uniform vec4 light_position; // Posição da luz
 uniform vec3 source_spectrum; // Espectro da fonte de iluminação
 uniform vec3 ambient_spectrum; // Espectro da luz ambiente
-uniform vec3 Kd; // Refletância difusa
-uniform vec3 Ks; // Refletância especular
-uniform vec3 Ka; // Refletância ambiente
-uniform float q; // Expoente especular para o modelo de iluminação de Phong
+uniform vec3 diffuse_reflectance = vec3(0.0,0.0,0.0); // Refletância difusa
+uniform vec3 specular_reflectance = vec3(0.0,0.0,0.0); // Refletância especular
+uniform vec3 ambient_reflectance = vec3(0.0,0.0,0.0); // Refletância ambiente
+uniform float phong_exponent = 1; // Expoente especular para o modelo de iluminação de Phong
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec3 color;
 
 void main()
 {
+    vec3 Kd = diffuse_reflectance;
+    vec3 Ks = specular_reflectance;
+    vec3 Ka = ambient_reflectance;
+    float q = phong_exponent;
+
     // Obtemos a posição da câmera utilizando a inversa da matriz que define o
     // sistema de coordenadas da câmera.
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);

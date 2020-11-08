@@ -11,14 +11,16 @@ int main()
 
 	Window window = Window(800, 600, "The Labyrinth");
 
+	ReflectanceComponents defaultReflectance;
+
 	Mesh boxMesh;
 	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
 	boxMesh.rotationAxis = {0, 1.0, 0};
-	GraphicObject box(&boxMesh);
+	GraphicObject box(&boxMesh, defaultReflectance, 1);
 
 	Mesh groundMesh;
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
-	GraphicObject ground(&groundMesh);
+	GraphicObject ground(&groundMesh, defaultReflectance, 1);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
