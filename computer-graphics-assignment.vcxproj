@@ -24,7 +24,9 @@
     <ClInclude Include="Core\Headers\engine.hpp" />
     <ClInclude Include="Core\Headers\error.hpp" />
     <ClInclude Include="Core\Headers\input.hpp" />
+    <ClInclude Include="Core\Headers\light.hpp" />
     <ClInclude Include="Core\Headers\mesh.hpp" />
+    <ClInclude Include="Core\Headers\object.hpp" />
     <ClInclude Include="Core\Headers\scene.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
@@ -41,7 +43,9 @@
     <ClCompile Include="Core\Source\Engine\engine.cpp" />
     <ClCompile Include="Core\Source\Engine\error.cpp" />
     <ClCompile Include="Core\Source\Engine\input.cpp" />
+    <ClCompile Include="Core\Source\Engine\light.cpp" />
     <ClCompile Include="Core\Source\Engine\mesh.cpp" />
+    <ClCompile Include="Core\Source\Engine\object.cpp" />
     <ClCompile Include="Core\Source\Engine\scene.cpp" />
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />

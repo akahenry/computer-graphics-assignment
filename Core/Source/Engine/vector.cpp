@@ -118,7 +118,7 @@ Vector2 Vector2::operator+(const Vector2 other)
 	return Vector2(x + other.x, y + other.y);
 }
 
-Vector3& Vector3::operator+=(const Vector3& other)
+Vector2& Vector2::operator+=(const Vector2& other)
 {
 	this->x += other.x;
 	this->y += other.y;
@@ -131,7 +131,7 @@ Vector2 Vector2::operator-(const Vector2 other)
 	return Vector2(x - other.x, y - other.y);
 }
 
-Vector3& Vector3::operator-=(const Vector3& other)
+Vector2& Vector2::operator-=(const Vector2& other)
 {
 	this->x -= other.x;
 	this->y -= other.y;
@@ -149,7 +149,7 @@ Vector2 Vector2::operator/(float num)
 	return Vector2(x / num, y / num);
 }
 
-Vector3& Vector3::operator/=(const Vector3& other)
+Vector2& Vector2::operator/=(const Vector2& other)
 {
 	this->x /= other.x;
 	this->y /= other.y;
@@ -162,7 +162,7 @@ Vector2 Vector2::operator*(float num)
 	return Vector2(x * num, y * num);
 }
 
-Vector3& Vector3::operator*=(const Vector3& other)
+Vector2& Vector2::operator*=(const Vector2& other)
 {
 	this->x *= other.x;
 	this->y *= other.y;

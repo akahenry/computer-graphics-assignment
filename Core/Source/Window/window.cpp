@@ -1,6 +1,6 @@
 #include <window.hpp>
 
-Window::Window(int width, int height, const char* name, Shader shader)
+Window::Window(int width, int height, const char* name)
 {
 	this->window = glfwCreateWindow(width, height, name, NULL, NULL);
 	if (!this->window)
@@ -30,13 +30,11 @@ Window::Window(int width, int height, const char* name, Shader shader)
 	// biblioteca GLAD.
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-	this->shader = shader;
-
-	GLuint vertex_shader_id = this->shader.vertex_shader_id;
-	GLuint fragment_shader_id = this->shader.fragment_shader_id;
+	GLuint vertex_shader_id = this->defaultShader.vertex_shader_id;
+	GLuint fragment_shader_id = this->defaultShader.fragment_shader_id;
 
 	// Criamos um programa de GPU utilizando os shaders carregados acima
-	this->program_id = this->shader.program_id;
+	this->program_id = this->defaultShader.program_id;
 
 	// Inicializamos o c�digo para renderiza��o de texto.
 	TextRendering_Init();
@@ -228,8 +226,8 @@ void Window::DrawObject(GraphicObject object)
 
 void Window::DrawScene(Scene scene)
 {
-	for (GraphicObject object : scene.objectList)
+	for (GraphicObject* object : scene.objectList)
 	{
-		this->DrawObject(object);
+		this->DrawObject(*object);
 	}
 }

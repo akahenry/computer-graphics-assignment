@@ -6,7 +6,7 @@
 class Scene
 {
 public:
-	std::vector<GraphicObject> objectList;
+	std::vector<GraphicObject*> objectList;
 
-	void AddObject(GraphicObject object);
+	void AddObject(GraphicObject* object);
 };

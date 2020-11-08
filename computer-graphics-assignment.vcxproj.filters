@@ -72,6 +72,12 @@
     <ClInclude Include="Include\tiny_obj_loader\tiny_obj_loader.h">
       <Filter>Resource files\tiny_obj_loader</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Headers\light.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Headers\object.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Source\Engine\engine.cpp">
@@ -118,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="Include\tiny_obj_loader\tiny_obj_loader.cpp">
       <Filter>Resource files\tiny_obj_loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\light.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\object.cpp">
+      <Filter>Source files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

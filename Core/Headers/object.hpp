@@ -1,7 +1,6 @@
 #pragma once
 
 #include <mesh.hpp>
-#include <window.hpp>
 
 struct ReflectanceComponents
 {
@@ -17,6 +16,5 @@ public:
     ReflectanceComponents reflectance;
 
     GraphicObject(Mesh* mesh);
-    void AddOnWindow(Window* window);
     void SetMesh(Mesh* mesh);
 };

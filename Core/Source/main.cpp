@@ -4,25 +4,28 @@
 #include <mesh.hpp>
 #include <color.hpp>
 
+
 int main()
 {
 	Engine engine = Engine();
 
 	Window window = Window(800, 600, "The Labyrinth");
 
-	Mesh box;
-	box.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
-	box.rotationAxis = {0, 1.0, 0};
+	Mesh boxMesh;
+	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
+	boxMesh.rotationAxis = {0, 1.0, 0};
+	GraphicObject box(&boxMesh);
 
-	Mesh ground;
-	ground.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
+	Mesh groundMesh;
+	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
+	GraphicObject ground(&groundMesh);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
 
 	Scene scene1;
-	scene1.AddMesh(&box);
-	scene1.AddMesh(&ground);
+	scene1.AddObject(&box);
+	scene1.AddObject(&ground);
 
 	float t = 0;
 	bool buttonPressed = false;
@@ -32,8 +35,8 @@ int main()
     while (!window.ShouldClose())
     {
 		t += 0.001;
-		box.rotationAngle = t;
-		box.position.y = sin(t);
+		boxMesh.rotationAngle = t;
+		boxMesh.position.y = sin(t);
 
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 

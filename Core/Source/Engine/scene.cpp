@@ -1,6 +1,6 @@
 #include <scene.hpp>
 
-void Scene::AddObject(GraphicObject object)
+void Scene::AddObject(GraphicObject* object)
 {
 	this->objectList.push_back(object);
 }

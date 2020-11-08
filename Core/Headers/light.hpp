@@ -3,20 +3,15 @@
 
 #include <vector.hpp>
 
-struct SpectrumComponents
-{
-    Vector3 source;
-    Vector3 ambient;
-};
-
 class LightSource
 {
 public:
     Vector3 position;
-    SpectrumComponents spectrumComponents;
+	Vector3 lightSpectrum;
+	Vector3 ambientSpectrum;
     float phongSpecularExponent;
 
-    LightSource(Vector3 position, SpectrumComponents spectrum, float phongExponent);
+	LightSource(Vector3 position = { 0,0,0 }, Vector3 lightSpectrum = { 1,1,1 }, Vector3 ambientSpectrum = { 1,1,1 }, float phongExponent = 20);
 };
 
 #endif

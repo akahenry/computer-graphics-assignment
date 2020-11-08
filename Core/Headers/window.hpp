@@ -39,7 +39,7 @@ private:
 	GLint view_uniform;
 	GLint projection_uniform;
 	GLint render_as_black_uniform;
-	Shader shader;
+	Shader defaultShader = Shader("shader_vertex.glsl", "shader_fragment.glsl");
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();
@@ -66,7 +66,7 @@ private:
 	}
 
 public:
-	Window(int width, int height, const char* name, Shader shader = Shader("shader_vertex.glsl", "shader_fragment.glsl"));
+	Window(int width, int height, const char* name);
     bool ShouldClose();
     void PollEvents();
     void ClearWindow(Color color);
