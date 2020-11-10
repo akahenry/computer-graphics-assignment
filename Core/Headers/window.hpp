@@ -39,6 +39,7 @@ private:
 	GLint view_uniform;
 	GLint projection_uniform;
 	GLint render_as_black_uniform;
+	GLint using_texture_uniform;
 	Shader defaultShader;
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);

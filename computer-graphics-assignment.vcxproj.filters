@@ -133,10 +133,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Include\shader_fragment.glsl">
+    <None Include="Include\default.frag">
       <Filter>Resource files</Filter>
     </None>
-    <None Include="Include\shader_vertex.glsl">
+    <None Include="Include\default.vert">
       <Filter>Resource files</Filter>
     </None>
   </ItemGroup>

@@ -30,7 +30,7 @@ Window::Window(int width, int height, const char* name)
 	// biblioteca GLAD.
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
-	this->defaultShader = Shader("shader_vertex.glsl", "shader_fragment.glsl");
+	this->defaultShader = Shader("default.vert", "default.frag");
 
 	GLuint vertex_shader_id = this->defaultShader.vertex_shader_id;
 	GLuint fragment_shader_id = this->defaultShader.fragment_shader_id;
@@ -46,6 +46,7 @@ Window::Window(int width, int height, const char* name)
 	view_uniform = glGetUniformLocation(program_id, "view");
 	projection_uniform = glGetUniformLocation(program_id, "projection");
 	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black");
+	using_texture_uniform = glGetUniformLocation(program_id, "using_texture");
 
 	// Habilitamos o Z-buffer
 	glEnable(GL_DEPTH_TEST);
@@ -198,7 +199,8 @@ void Window::DrawMesh(Mesh mesh)
 	CalcModelFromMesh(mesh);
 
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-	glUniform1i(render_as_black_uniform, false);
+	glUniform1i(render_as_black_uniform, mesh.usingTexture);
+	glUniform1i(using_texture_uniform, true);
 
 	glUseProgram(this->defaultShader.program_id);
 

@@ -16,21 +16,26 @@ int main()
 	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);;
 	defaultReflectance.ambient = defaultReflectance.diffuse/2;
 
-	Mesh boxMesh;
+	/*Mesh boxMesh;
 	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
 	boxMesh.rotationAxis = {0, 1.0, 0};
 	GraphicObject box(&boxMesh, defaultReflectance, 32);
 
 	Mesh groundMesh;
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
-	GraphicObject ground(&groundMesh, defaultReflectance, 1);
+	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
+
+	Mesh bunnyMesh;
+	bunnyMesh.LoadFromObj({0,0,-5}, "PenguinBaseMesh.obj");
+	GraphicObject bunny(&bunnyMesh, defaultReflectance, 32);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
 
 	Scene scene1;
-	scene1.AddObject(&box);
-	scene1.AddObject(&ground);
+	scene1.AddObject(&bunny);
+	/*scene1.AddObject(&box);
+	scene1.AddObject(&ground);*/
 
 	float t = 0;
 	bool buttonPressed = false;
@@ -40,8 +45,8 @@ int main()
     while (!window.ShouldClose())
     {
 		t += 0.001;
-		boxMesh.rotationAngle = t;
-		boxMesh.position.y = sin(t);
+		/*boxMesh.rotationAngle = t;
+		boxMesh.position.y = sin(t);*/
 
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 

@@ -57,8 +57,8 @@
     <ClCompile Include="Include\tiny_obj_loader\tiny_obj_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Include\shader_fragment.glsl" />
-    <None Include="Include\shader_vertex.glsl" />
+    <None Include="Include\default.frag" />
+    <None Include="Include\default.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

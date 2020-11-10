@@ -15,6 +15,7 @@ public:
 	Vector3 position;
 	Vector3 scale = Vector3(1, 1, 1);
 	float rotationAngle = 0;
+	bool usingTexture = true;
 	Vector3 rotationAxis = Vector3(0,1,0);
 	GLenum renderingMode = GL_TRIANGLES; // GL_TRIANGLES, GL_TRIANGLE_FAN ...
 	int numVerticesComponents; // Quantidade de v�rtices*4, um float pra cada dimens�o
@@ -33,6 +34,6 @@ private:
 	GLuint* indices; // Array que define os tri�ngulos
 
 	void BindVao(); // com model_coefficients, color_coefficients, indices e rendering mode setados, constr�i o mesh e seta o vaoId
-	void ComputeNormals(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes, std::vector<tinyobj::material_t> &materials);
+	void ComputeNormals(tinyobj::attrib_t& attrib, std::vector<tinyobj::shape_t>& shapes, std::vector<tinyobj::material_t>& materials);
 };
 
