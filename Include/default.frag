@@ -36,23 +36,23 @@ out vec4 color;
 
 void main()
 {
-    vec3 Kd = vec3(0.5, 0.5, 0.5);
-    vec3 Ks = vec3(0.8, 0.8, 0.8);
-    vec3 Ka = vec3(0.5, 0.5, 0.5);
-    float q = 32.0;
+    vec3 Kd = diffuse_reflectance; // 0.08, 0.4, 0.8
+    vec3 Ks = specular_reflectance; // 0.8, 0.8, 0.8
+    vec3 Ka = ambient_reflectance; // Kd/2
+    float q = phong_exponent; // 32
     
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 camera_position = inverse(view) * origin;
     vec4 p = position_world;
 
     vec4 n = normalize(normal);
-    vec4 l = normalize(vec4(1.0,1.0,0.5,0.0));
+    vec4 l = normalize(position_world - light_position); // 1.0,1.0,0.5,0.0
     vec4 v = normalize(camera_position - p);
     vec4 r = -l + 2*n*(dot(n, l));
 
 
-    vec3 I = vec3(1.0, 1.0, 1.0);
-    vec3 Ia = vec3(0.2, 0.2, 0.2);
+    vec3 I = source_spectrum;
+    vec3 Ia = ambient_spectrum;
 
     vec3 KdTexture = texture(TextureImage, texcoords).rgb;
 

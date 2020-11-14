@@ -1,28 +1,11 @@
 #include <shader.hpp>
 
-void Shader::RefreshIllumination()
-{
-    GLuint light_position_id = glGetUniformLocation(program_id, "light_position"); // Posição da luz
-    GLuint source_spectrum_id = glGetUniformLocation(program_id, "source_spectrum"); // Espectro da fonte de iluminação
-    GLuint ambient_spectrum_id = glGetUniformLocation(program_id, "ambient_spectrum"); // Espectro da luz ambiente
-
-    glm::vec4 light_position = { this->illumination.position.x, this->illumination.position.y, this->illumination.position.z, 1.0f };
-    glm::vec3 source_spectrum = { this->illumination.lightSpectrum.x, this->illumination.lightSpectrum.y, this->illumination.lightSpectrum.z };
-    glm::vec3 ambient_spectrum = { this->illumination.ambientSpectrum.x, this->illumination.ambientSpectrum.y, this->illumination.ambientSpectrum.z };
-
-    glUniform4fv(light_position_id, 1, glm::value_ptr(light_position));
-    glUniform3fv(source_spectrum_id, 1, glm::value_ptr(source_spectrum));
-    glUniform3fv(ambient_spectrum_id, 1, glm::value_ptr(ambient_spectrum));
-}
-
 Shader::Shader(const char* vertex_shader_filename, const char* fragment_shader_filename)
 {  
     this->illumination = LightSource();
     this->vertex_shader_id = Shader::LoadShader_Vertex(vertex_shader_filename);
     this->fragment_shader_id = Shader::LoadShader_Fragment(fragment_shader_filename);
     this->program_id = Engine::CreateGpuProgram(this->vertex_shader_id, this->fragment_shader_id);
-
-    this->RefreshIllumination();
 }
 
 Shader::Shader()

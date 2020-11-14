@@ -47,6 +47,7 @@ private:
 	void CalcProjectionMatrix();
 	void CalcModelFromMesh(Mesh mesh);
 	void DrawMesh(Mesh mesh);
+	void SendLightsToShader(Scene& scene);
 	
 	// Callback pra quando a janela for redimensionada
 	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);

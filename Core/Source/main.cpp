@@ -12,8 +12,8 @@ int main()
 	Window window = Window(800, 600, "The Labyrinth");
 
 	ReflectanceComponents defaultReflectance;
-	defaultReflectance.diffuse = Vector3(0.08, 0.4, 0.8);;
-	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);;
+	defaultReflectance.diffuse = Vector3(0.08, 0.4, 0.8);
+	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);
 	defaultReflectance.ambient = defaultReflectance.diffuse/2;
 
 	/*Mesh boxMesh;
@@ -27,12 +27,15 @@ int main()
 
 	Mesh bunnyMesh;
 	bunnyMesh.LoadFromObj({0,0,-5}, "PenguinBaseMesh.obj");
-	GraphicObject bunny(&bunnyMesh, defaultReflectance, 32);
+	GraphicObject bunny(&bunnyMesh, defaultReflectance, 100);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
 
+	LightSource light = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, {0.2, 0.2, 0.2});
+
 	Scene scene1;
+	scene1.AddLight(&light);
 	scene1.AddObject(&bunny);
 	/*scene1.AddObject(&box);
 	scene1.AddObject(&ground);*/
@@ -45,8 +48,8 @@ int main()
     while (!window.ShouldClose())
     {
 		t += 0.001;
-		/*boxMesh.rotationAngle = t;
-		boxMesh.position.y = sin(t);*/
+		/*bunnyMesh.rotationAngle = t;
+		bunnyMesh.position.y = sin(t);*/
 
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 

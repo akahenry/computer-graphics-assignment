@@ -21,7 +21,6 @@ private:
     void LoadShader(const char* filename, GLuint shader_id);
     GLuint LoadShader_Vertex(const char* filename);
     GLuint LoadShader_Fragment(const char* filename);
-    void RefreshIllumination();
 
 public:
     GLuint vertex_shader_id;
