@@ -3,10 +3,12 @@
 #include <window.hpp>
 #include <mesh.hpp>
 #include <color.hpp>
+#include <ctime>
 
 
 int main()
 {
+	clock_t tStart = clock();
 	Engine engine = Engine();
 
 	Window window = Window(800, 600, "The Labyrinth");
@@ -26,17 +28,28 @@ int main()
 	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
 
 	Mesh bunnyMesh;
-	bunnyMesh.LoadFromObj({0,0,-5}, "PenguinBaseMesh.obj");
+	bunnyMesh.LoadFromObj({0,0,-5}, "bunny.obj");
 	GraphicObject bunny(&bunnyMesh, defaultReflectance, 100);
+
+	Mesh penguinMesh;
+	penguinMesh.LoadFromObj({ 5,0,-5 }, "PenguinBaseMesh.obj");
+	GraphicObject penguin(&penguinMesh, defaultReflectance, 100);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
 
-	LightSource light = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, {0.2, 0.2, 0.2});
+	LightSource light = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, {0.2, 0.2, 0.2}, LightType::Phong);
+	LightSource gouraudLight = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, { 0.2, 0.2, 0.2 }, LightType::Gouraud);
 
 	Scene scene1;
 	scene1.AddLight(&light);
 	scene1.AddObject(&bunny);
+	scene1.AddObject(&penguin);
+
+	Scene scene2;
+	scene2.AddLight(&gouraudLight);
+	scene2.AddObject(&bunny);
+	scene2.AddObject(&penguin);
 	/*scene1.AddObject(&box);
 	scene1.AddObject(&ground);*/
 
@@ -48,8 +61,8 @@ int main()
     while (!window.ShouldClose())
     {
 		t += 0.001;
-		/*bunnyMesh.rotationAngle = t;
-		bunnyMesh.position.y = sin(t);*/
+		bunnyMesh.rotationAngle = t;
+		bunnyMesh.position.y = sin(t);
 
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 
@@ -92,7 +105,10 @@ int main()
 		buttonPressedLastFrame = buttonPressed;
 
 		window.PreDrawing(Color(1.0,1.0,1.0,1.0));
-		window.DrawScene(scene1);
+		if (double(clock() - tStart) / (clock_t)1000 >= 20)
+			window.DrawScene(scene2);
+		else
+			window.DrawScene(scene1);
         window.PollEvents();
     }
 

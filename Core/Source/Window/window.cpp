@@ -192,14 +192,17 @@ void Window::SendLightsToShader(Scene& scene)
 	GLuint light_position_id = glGetUniformLocation(program_id, "light_position"); // Posição da luz
 	GLuint source_spectrum_id = glGetUniformLocation(program_id, "source_spectrum"); // Espectro da fonte de iluminação
 	GLuint ambient_spectrum_id = glGetUniformLocation(program_id, "ambient_spectrum"); // Espectro da luz ambiente
+	GLuint gouraud_light_id = glGetUniformLocation(program_id, "gouraud_light");
 
 	glm::vec4 light_position = { scene.lightList[0]->position.x, scene.lightList[0]->position.y, scene.lightList[0]->position.z, 1.0f };
 	glm::vec3 source_spectrum = { scene.lightList[0]->lightSpectrum.x, scene.lightList[0]->lightSpectrum.y, scene.lightList[0]->lightSpectrum.z };
 	glm::vec3 ambient_spectrum = { scene.lightList[0]->ambientSpectrum.x, scene.lightList[0]->ambientSpectrum.y, scene.lightList[0]->ambientSpectrum.z };
+	bool gouraud_light = (scene.lightList[0]->lightType == LightType::Gouraud);
 
 	glUniform4fv(light_position_id, 1, glm::value_ptr(light_position));
 	glUniform3fv(source_spectrum_id, 1, glm::value_ptr(source_spectrum));
 	glUniform3fv(ambient_spectrum_id, 1, glm::value_ptr(ambient_spectrum));
+	glUniform1i(gouraud_light_id, gouraud_light);
 }
 
 void Window::DrawText(const std::string str, float x, float y, float scale)
