@@ -28,12 +28,13 @@ int main()
 	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
 
 	Mesh bunnyMesh;
-	bunnyMesh.LoadFromObj({0,0,-5}, "bunny.obj");
-	GraphicObject bunny(&bunnyMesh, defaultReflectance, 100);
+	bunnyMesh.LoadFromObj("bunny.obj");
+	GraphicObject bunny({ 0,0,-5 }, &bunnyMesh, defaultReflectance, 100);
 
 	Mesh penguinMesh;
-	penguinMesh.LoadFromObj({ 5,0,-5 }, "PenguinBaseMesh.obj");
-	GraphicObject penguin(&penguinMesh, defaultReflectance, 100);
+	penguinMesh.LoadFromObj("PenguinBaseMesh.obj");
+	GraphicObject penguin({ 5,0,-5 }, &penguinMesh, defaultReflectance, 100);
+	GraphicObject penguin2({ 10,0,-5 }, &penguinMesh, defaultReflectance, 100);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
@@ -45,11 +46,13 @@ int main()
 	scene1.AddLight(&light);
 	scene1.AddObject(&bunny);
 	scene1.AddObject(&penguin);
+	scene1.AddObject(&penguin2);
 
 	Scene scene2;
 	scene2.AddLight(&gouraudLight);
 	scene2.AddObject(&bunny);
 	scene2.AddObject(&penguin);
+	scene2.AddObject(&penguin2);
 	/*scene1.AddObject(&box);
 	scene1.AddObject(&ground);*/
 
@@ -61,8 +64,8 @@ int main()
     while (!window.ShouldClose())
     {
 		t += 0.001;
-		bunnyMesh.rotationAngle = t;
-		bunnyMesh.position.y = sin(t);
+		bunny.rotationAngle = t;
+		bunny.position.y = sin(t);
 
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 

@@ -12,19 +12,15 @@ class Mesh
 {
 public:
 	GLuint vaoId;
-	Vector3 position;
-	Vector3 scale = Vector3(1, 1, 1);
-	float rotationAngle = 0;
 	bool usingTexture = true;
-	Vector3 rotationAxis = Vector3(0,1,0);
 	GLenum renderingMode = GL_TRIANGLES; // GL_TRIANGLES, GL_TRIANGLE_FAN ...
 	int numVerticesComponents; // Quantidade de v�rtices*4, um float pra cada dimens�o
 	int numNormalsComponents; // Quantidade de normais*4, um float pra cada dimens�o
 	int numTextureComponents; // Quantidade de normais*2, um float pra cada dimens�o
 	int numIndices; // Quantidade de indices no vetor indices
 
-	void MakeBox(Vector3 position, Vector3 size);
-	void LoadFromObj(Vector3 position, const char* filename, const char* basepath = NULL);
+	void MakeBox(Vector3 size);
+	void LoadFromObj(const char* filename, const char* basepath = NULL);
 
 private:
 	GLfloat* model_coefficients; // Array com posi��es dos v�rtices

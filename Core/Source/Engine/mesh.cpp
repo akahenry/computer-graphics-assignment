@@ -1,8 +1,7 @@
 #include <mesh.hpp>
 
-void Mesh::MakeBox(Vector3 position, Vector3 size)
+void Mesh::MakeBox(Vector3 size)
 {
-	this->position = position;
 	GLfloat model_coefficients[] = {
 		// V�rtices da frente
 		0 - size.x/2, 0 - size.y/2, 0 + size.z/2, 1.0f,
@@ -60,7 +59,7 @@ void Mesh::MakeBox(Vector3 position, Vector3 size)
 	this->BindVao();
 }
 
-void Mesh::LoadFromObj(Vector3 position, const char* filename, const char* basepath)
+void Mesh::LoadFromObj(const char* filename, const char* basepath)
 {
 	tinyobj::attrib_t attrib;
 	std::vector<tinyobj::shape_t> shapes;
@@ -140,8 +139,6 @@ void Mesh::LoadFromObj(Vector3 position, const char* filename, const char* basep
 			color_coefficients.push_back(1.0f);
 		}
 	}
-
-	this->position = position;
 
 	this->model_coefficients = model_coefficients.data();
 	this->numVerticesComponents = model_coefficients.size();

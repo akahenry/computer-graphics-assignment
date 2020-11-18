@@ -45,7 +45,7 @@ private:
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();
 	void CalcProjectionMatrix();
-	void CalcModelFromMesh(Mesh mesh);
+	void CalcModelFromObject(GraphicObject obj);
 	void DrawMesh(Mesh mesh);
 	void SendLightsToShader(Scene& scene);
 	

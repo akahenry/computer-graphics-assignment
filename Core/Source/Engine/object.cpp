@@ -1,7 +1,8 @@
 #include <object.hpp>
 
-GraphicObject::GraphicObject(Mesh* mesh, ReflectanceComponents reflectance, float phong)
+GraphicObject::GraphicObject(Vector3 position, Mesh* mesh, ReflectanceComponents reflectance, float phong)
 {
+    this->position = position;
     this->mesh = mesh;
     this->reflectance = reflectance;
     this->phongExponent = phong;

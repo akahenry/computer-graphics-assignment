@@ -140,20 +140,20 @@ void Window::CalcProjectionMatrix()
 	this->projectionMatrix = -M * P;
 }
 
-void Window::CalcModelFromMesh(Mesh mesh)
+void Window::CalcModelFromObject(GraphicObject obj)
 {
 	glm::mat4 S = MakeGlmMatrix(
-		mesh.scale.x, 0.0f		  , 0.0f		, 0.0f,
-		0.0f		, mesh.scale.y, 0.0f		, 0.0f,
-		0.0f		, 0.0f		  , mesh.scale.z, 0.0f,
+		obj.scale.x, 0.0f		  , 0.0f		, 0.0f,
+		0.0f		, obj.scale.y, 0.0f		, 0.0f,
+		0.0f		, 0.0f		  , obj.scale.z, 0.0f,
 		0.0f		, 0.0f		  , 0.0f		, 1.0f
 	);
 
 
-	float c = cos(mesh.rotationAngle);
-	float s = sin(mesh.rotationAngle);
+	float c = cos(obj.rotationAngle);
+	float s = sin(obj.rotationAngle);
 
-	Vector3 v = mesh.rotationAxis.Normalized();
+	Vector3 v = obj.rotationAxis.Normalized();
 
 	float vx = v.x;
 	float vy = v.y;
@@ -168,9 +168,9 @@ void Window::CalcModelFromMesh(Mesh mesh)
 	);
 
 	glm::mat4 T = MakeGlmMatrix(
-		1.0f, 0.0f, 0.0f, mesh.position.x,
-		0.0f, 1.0f, 0.0f, mesh.position.y,
-		0.0f, 0.0f, 1.0f, mesh.position.z,
+		1.0f, 0.0f, 0.0f, obj.position.x,
+		0.0f, 1.0f, 0.0f, obj.position.y,
+		0.0f, 0.0f, 1.0f, obj.position.z,
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 
@@ -213,8 +213,6 @@ void Window::DrawText(const std::string str, float x, float y, float scale)
 void Window::DrawMesh(Mesh mesh)
 {
 	glBindVertexArray(mesh.vaoId);
-	
-	CalcModelFromMesh(mesh);
 
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniform1i(render_as_black_uniform, false);
@@ -258,6 +256,7 @@ void Window::DrawObject(GraphicObject object)
 	glUniform3fv(ambient_reflectance_id, 1, glm::value_ptr(ambient_reflectance));
 	glUniform1f(phong_exponent_id, phong_exponent);
 
+	this->CalcModelFromObject(object);
 	this->DrawMesh(*(object.mesh));
 }
 
