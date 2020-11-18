@@ -43,7 +43,7 @@ void main()
         vec3 Ks = specular_reflectance; // 0.8, 0.8, 0.8
         vec3 Ka = ambient_reflectance; // Kd/2
         float q = phong_exponent; // 32
-    
+
         vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
         vec4 camera_position = inverse(view) * origin;
         vec4 p = position_world;
@@ -57,7 +57,7 @@ void main()
         vec3 I = source_spectrum;
         vec3 Ia = ambient_spectrum;
 
-        vec3 KdTexture = texture(TextureImage, texcoords).rgb;
+    vec3 KdTexture = texture2D(TextureImage, texcoords).rgb;
 
         vec3 lambertDiffuse = Kd*I*max(0, dot(n, l));
         vec3 ambientTerm = Ka*Ia;
@@ -82,4 +82,4 @@ void main()
     {
         color = cor_interpolada;
     }
-} 
+}

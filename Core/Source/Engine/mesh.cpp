@@ -59,6 +59,59 @@ void Mesh::MakeBox(Vector3 size)
 	this->BindVao();
 }
 
+void Mesh::LoadTexture()
+{
+	auto FileExists = [](const std::string& abs_filename) {
+		bool ret;
+		FILE* fp = fopen(abs_filename.c_str(), "rb");
+		if (fp) {
+			ret = true;
+			fclose(fp);
+		}
+		else {
+			ret = false;
+		}
+
+		return ret;
+	};
+
+	/*auto GetBaseDir = [](const std::string& filepath) {
+		if (filepath.find_last_of("/\\") != std::string::npos)
+			return filepath.substr(0, filepath.find_last_of("/\\"));
+		return std::string();
+	};*/
+
+	// Append `default` material
+	material = tinyobj::material_t();
+	tinyobj::material_t* mp = &material;
+	//std::string base_dir = GetBaseDir()
+
+	if (mp->diffuse_texname.length() > 0) {
+		textureId = -1;
+
+		std::string texture_filename = mp->diffuse_texname;
+		if (!FileExists(texture_filename)) {
+			// Append base dir.
+			texture_filename = mp->diffuse_texname;
+			if (!FileExists(texture_filename)) {
+				std::cerr << "Unable to find file: " << mp->diffuse_texname << std::endl;
+				exit(1);
+			}
+		}
+
+		image = stbi_load(texture_filename.c_str(), &imgWidth, &imgHeight, &imgComp, STBI_default);
+		if (!image) {
+			std::cerr << "Unable to load texture: " << texture_filename << std::endl;
+			exit(1);
+		}
+		std::cout << "Loaded texture: " << texture_filename
+				  << ", w = " << imgWidth
+				  << ", h = " << imgHeight
+				  << ", comp = " << imgComp
+				  << std::endl;
+	}
+}
+
 void Mesh::LoadFromObj(const char* filename, const char* basepath)
 {
 	tinyobj::attrib_t attrib;
@@ -103,7 +156,7 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 			model_coefficients.push_back(vz); // Z
 			model_coefficients.push_back(1.0f); // W
 
-			
+
 			if (idx.normal_index != -1)
 			{
 				const float nx = attrib.normals[3 * idx.normal_index + 0];
@@ -156,6 +209,8 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 
 	renderingMode = GL_TRIANGLES;
 
+	this->LoadTexture();
+
 	this->BindVao();
 }
 
@@ -190,7 +245,7 @@ void Mesh::BindVao()
 	glEnableVertexAttribArray(location);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	// Faz as paradas das normais dos vértices e das faces. 
+	// Faz as paradas das normais dos vértices e das faces.
 	if (this->numNormalsComponents)
     {
         GLuint VBO_normal_coefficients_id;
@@ -220,13 +275,33 @@ void Mesh::BindVao()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+	if (this->textureId != -1)
+	{
+		glGenTextures(1, &textureId);
+		glBindTexture(GL_TEXTURE_2D, textureId);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		if (imgComp == 3)
+		{
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		}
+		else if (imgComp == 4) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+		}
+		else {
+			assert(0);  // TODO
+		}
+		glBindTexture(GL_TEXTURE_2D, 0);
+		stbi_image_free(image);
+	}
+
 	// Faz as paradas dos indices
 	GLuint indices_id;
 	glGenBuffers(1, &indices_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->numIndices*sizeof(GLuint), NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, this->numIndices*sizeof(GLuint), this->indices);
-	
+
 	glBindVertexArray(0);
 }
 

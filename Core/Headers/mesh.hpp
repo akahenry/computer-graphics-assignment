@@ -28,8 +28,14 @@ private:
 	GLfloat* texture_coefficients; // Array com normais dos vértices
 	GLfloat* color_coefficients; // Array com cores dos v�rtices
 	GLuint* indices; // Array que define os tri�ngulos
+	tinyobj::material_t material;
+	GLuint textureId;
+	int imgComp;
+	unsigned char* image;
+	int imgWidth, imgHeight;
 
 	void BindVao(); // com model_coefficients, color_coefficients, indices e rendering mode setados, constr�i o mesh e seta o vaoId
 	void ComputeNormals(tinyobj::attrib_t& attrib, std::vector<tinyobj::shape_t>& shapes, std::vector<tinyobj::material_t>& materials);
+	void LoadTexture();
 };
 
