@@ -217,6 +217,7 @@ void Window::DrawMesh(Mesh mesh)
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniform1i(render_as_black_uniform, false);
 	glUniform1i(using_texture_uniform, mesh.usingTexture); // mesh.usingTexture
+	glUniform1i(glGetUniformLocation(this->defaultShader.program_id, "TextureImage"), 0);
 
 	glUseProgram(this->defaultShader.program_id);
 

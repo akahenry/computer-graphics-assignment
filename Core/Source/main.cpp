@@ -27,14 +27,14 @@ int main()
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
 	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
 
-	Mesh bunnyMesh;
-	bunnyMesh.LoadFromObj("bunny.obj");
-	GraphicObject bunny({ 0,0,-5 }, &bunnyMesh, defaultReflectance, 100);
-
 	Mesh penguinMesh;
 	penguinMesh.LoadFromObj("PenguinBaseMesh.obj");
 	GraphicObject penguin({ 5,0,-5 }, &penguinMesh, defaultReflectance, 100);
 	GraphicObject penguin2({ 10,0,-5 }, &penguinMesh, defaultReflectance, 100);
+
+	Mesh bunnyMesh;
+	bunnyMesh.LoadFromObj("bunny.obj");
+	GraphicObject bunny({ 0,0,-5 }, &bunnyMesh, defaultReflectance, 100);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);

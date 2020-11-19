@@ -59,11 +59,12 @@ void Mesh::MakeBox(Vector3 size)
 	this->BindVao();
 }
 
-void Mesh::LoadTexture()
+void Mesh::LoadTexture(std::vector<tinyobj::material_t> materials)
 {
 	auto FileExists = [](const std::string& abs_filename) {
 		bool ret;
-		FILE* fp = fopen(abs_filename.c_str(), "rb");
+		FILE* fp;
+		errno_t err = fopen_s(&fp, abs_filename.c_str(), "rb");
 		if (fp) {
 			ret = true;
 			fclose(fp);
@@ -75,16 +76,11 @@ void Mesh::LoadTexture()
 		return ret;
 	};
 
-	/*auto GetBaseDir = [](const std::string& filepath) {
-		if (filepath.find_last_of("/\\") != std::string::npos)
-			return filepath.substr(0, filepath.find_last_of("/\\"));
-		return std::string();
-	};*/
+	// append default material
+	materials.push_back(tinyobj::material_t());
+	tinyobj::material_t* mp = &materials[0];
 
-	// Append `default` material
-	material = tinyobj::material_t();
-	tinyobj::material_t* mp = &material;
-	//std::string base_dir = GetBaseDir()
+	int num = mp->diffuse_texname.length();
 
 	if (mp->diffuse_texname.length() > 0) {
 		textureId = -1;
@@ -118,8 +114,25 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 
+	auto GetBaseDir = [](const std::string& filepath) {
+		if (filepath.find_last_of("/\\") != std::string::npos)
+			return filepath.substr(0, filepath.find_last_of("/\\"));
+		return std::string();
+	};
+
+	std::string baseDir = GetBaseDir(filename);
+	if (baseDir.empty()) {
+		baseDir = ".";
+	}
+
+	#ifdef _WIN32
+		baseDir += "\\";
+	#else
+		baseDir += "/";
+	#endif
+
 	std::string err;
-	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, true);
+	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, baseDir.c_str(), true);
 
 	if (!err.empty())
 		fprintf(stderr, "\n%s\n", err.c_str());
@@ -209,7 +222,7 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 
 	renderingMode = GL_TRIANGLES;
 
-	this->LoadTexture();
+	this->LoadTexture(materials);
 
 	this->BindVao();
 }
@@ -275,9 +288,9 @@ void Mesh::BindVao()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-	if (this->textureId != -1)
+	if (imgComp == 3 || imgComp == 4)
 	{
-		glGenTextures(1, &textureId);
+		/*glGenTextures(1, &textureId);
 		glBindTexture(GL_TEXTURE_2D, textureId);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -288,10 +301,35 @@ void Mesh::BindVao()
 		else if (imgComp == 4) {
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		}
-		else {
-			assert(0);  // TODO
-		}
 		glBindTexture(GL_TEXTURE_2D, 0);
+		stbi_image_free(image);*/
+
+		// Agora criamos objetos na GPU com OpenGL para armazenar a textura
+		GLuint texture_id;
+		GLuint sampler_id;
+		glGenTextures(1, &texture_id);
+		glGenSamplers(1, &sampler_id);
+
+		// Veja slides 95-96 do documento Aula_20_Mapeamento_de_Texturas.pdf
+		glSamplerParameteri(sampler_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glSamplerParameteri(sampler_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		// Parâmetros de amostragem da textura.
+		glSamplerParameteri(sampler_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glSamplerParameteri(sampler_id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Agora enviamos a imagem lida do disco para a GPU
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+		glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+		glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindSampler(0, sampler_id);
+
 		stbi_image_free(image);
 	}
 

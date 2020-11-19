@@ -65,7 +65,8 @@ void main()
 
         if (using_texture)
         {
-            vec3 colorInterpolada = vec3(lambertDiffuse*KdTexture + phongSpecularTerm + ambientTerm);
+            //vec3 colorInterpolada = vec3(lambertDiffuse*KdTexture + phongSpecularTerm + ambientTerm);
+            vec3 colorInterpolada = KdTexture;
             colorInterpolada = pow(colorInterpolada, vec3(1.0,1.0,1.0)/2.2);
             color = vec4(colorInterpolada, 1.0);
         }

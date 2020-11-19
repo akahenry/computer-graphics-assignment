@@ -20,7 +20,7 @@ public:
 	int numIndices; // Quantidade de indices no vetor indices
 
 	void MakeBox(Vector3 size);
-	void LoadFromObj(const char* filename, const char* basepath = NULL);
+	void LoadFromObj(const char* filename, const char* basepath = ".\\");
 
 private:
 	GLfloat* model_coefficients; // Array com posi��es dos v�rtices
@@ -36,6 +36,6 @@ private:
 
 	void BindVao(); // com model_coefficients, color_coefficients, indices e rendering mode setados, constr�i o mesh e seta o vaoId
 	void ComputeNormals(tinyobj::attrib_t& attrib, std::vector<tinyobj::shape_t>& shapes, std::vector<tinyobj::material_t>& materials);
-	void LoadTexture();
+	void LoadTexture(std::vector<tinyobj::material_t> materials);
 };
 
