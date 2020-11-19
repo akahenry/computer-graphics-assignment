@@ -40,12 +40,14 @@ private:
 	GLint projection_uniform;
 	GLint render_as_black_uniform;
 	GLint using_texture_uniform;
+	GLint using_texture_coords_uniform;
 	Shader defaultShader;
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();
 	void CalcProjectionMatrix();
 	void CalcModelFromObject(GraphicObject obj);
+	void DrawMesh(Mesh mesh, bool usingTexture);
 	void DrawMesh(Mesh mesh);
 	void SendLightsToShader(Scene& scene);
 	

@@ -30,6 +30,7 @@
     <ClInclude Include="Core\Headers\scene.hpp" />
     <ClInclude Include="Core\Headers\shader.hpp" />
     <ClInclude Include="Core\Headers\textrendering.hpp" />
+    <ClInclude Include="Core\Headers\texture.hpp" />
     <ClInclude Include="Core\Headers\vector.hpp" />
     <ClInclude Include="Core\Headers\window.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Core\Source\Engine\scene.cpp" />
     <ClCompile Include="Core\Source\Engine\shader.cpp" />
     <ClCompile Include="Core\Source\Engine\textrendering.cpp" />
+    <ClCompile Include="Core\Source\Engine\texture.cpp" />
     <ClCompile Include="Core\Source\Engine\vector.cpp" />
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />

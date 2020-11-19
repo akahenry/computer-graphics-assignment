@@ -12,12 +12,14 @@ class Mesh
 {
 public:
 	GLuint vaoId;
-	bool usingTexture = true;
+	bool usingTextureCoords = false;
 	GLenum renderingMode = GL_TRIANGLES; // GL_TRIANGLES, GL_TRIANGLE_FAN ...
 	int numVerticesComponents; // Quantidade de v�rtices*4, um float pra cada dimens�o
 	int numNormalsComponents; // Quantidade de normais*4, um float pra cada dimens�o
 	int numTextureComponents; // Quantidade de normais*2, um float pra cada dimens�o
 	int numIndices; // Quantidade de indices no vetor indices
+	Vector3 bbox_min;
+	Vector3 bbox_max;
 
 	void MakeBox(Vector3 size);
 	void LoadFromObj(const char* filename, const char* basepath = NULL);

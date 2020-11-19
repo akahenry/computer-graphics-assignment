@@ -34,7 +34,12 @@ int main()
 	Mesh penguinMesh;
 	penguinMesh.LoadFromObj("PenguinBaseMesh.obj");
 	GraphicObject penguin({ 5,0,-5 }, &penguinMesh, defaultReflectance, 100);
+	penguin.SetTexture("Penguin Diffuse Color.png");
 	GraphicObject penguin2({ 10,0,-5 }, &penguinMesh, defaultReflectance, 100);
+
+	Texture worldTexture = Texture("world.png");
+	penguin2.SetTexture(worldTexture);
+	bunny.SetTexture(worldTexture);
 
 	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	window.SetCamera(&camera);
@@ -108,10 +113,7 @@ int main()
 		buttonPressedLastFrame = buttonPressed;
 
 		window.PreDrawing(Color(1.0,1.0,1.0,1.0));
-		if (double(clock() - tStart) / (clock_t)1000 >= 20)
-			window.DrawScene(scene2);
-		else
-			window.DrawScene(scene1);
+		window.DrawScene(scene1);
         window.PollEvents();
     }
 

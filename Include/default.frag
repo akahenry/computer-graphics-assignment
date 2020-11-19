@@ -20,6 +20,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 uniform bool using_texture;
+uniform bool using_texture_coords;
 uniform bool render_as_black;
 
 // Componentes de iluminação
@@ -57,7 +58,7 @@ void main()
         vec3 I = source_spectrum;
         vec3 Ia = ambient_spectrum;
 
-        vec3 KdTexture = texture(TextureImage, texcoords).rgb;
+        vec3 KdTexture;
 
         vec3 lambertDiffuse = Kd*I*max(0, dot(n, l));
         vec3 ambientTerm = Ka*Ia;
@@ -65,7 +66,28 @@ void main()
 
         if (using_texture)
         {
-            vec3 colorInterpolada = vec3(lambertDiffuse*KdTexture + phongSpecularTerm + ambientTerm);
+            if (using_texture_coords)
+            {
+                KdTexture = texture(TextureImage, texcoords).rgb;
+            }
+            else
+            {
+                float minx = bbox_min.x;
+                float maxx = bbox_max.x;
+
+                float miny = bbox_min.y;
+                float maxy = bbox_max.y;
+
+                float minz = bbox_min.z;
+                float maxz = bbox_max.z;
+
+                float U = (position_model.x - minx)/(maxx - minx);
+                float V = (position_model.y - miny)/(maxy - miny);
+
+                KdTexture = texture(TextureImage, vec2(U, V)).rgb;
+            }
+
+            vec3 colorInterpolada = KdTexture * (max(0,dot(n,l)) + 0.01);
             colorInterpolada = pow(colorInterpolada, vec3(1.0,1.0,1.0)/2.2);
             color = vec4(colorInterpolada, 1.0);
         }

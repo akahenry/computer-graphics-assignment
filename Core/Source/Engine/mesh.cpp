@@ -65,6 +65,12 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 	std::vector<tinyobj::shape_t> shapes;
 	std::vector<tinyobj::material_t> materials;
 
+	const float minval = std::numeric_limits<float>::min();
+	const float maxval = std::numeric_limits<float>::max();
+
+	this->bbox_min = Vector3(maxval, maxval, maxval);
+	this->bbox_max = Vector3(minval, minval, minval);
+
 	std::string err;
 	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &err, filename, basepath, true);
 
@@ -80,7 +86,7 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 	std::vector<float> model_coefficients;
 	std::vector<float> color_coefficients;
 	std::vector<float> normal_coefficients;
-	std::vector<float>  texture_coefficients;
+	std::vector<float> texture_coefficients;
 
 	size_t num_triangles = shapes[0].mesh.num_face_vertices.size();
 
@@ -103,6 +109,12 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 			model_coefficients.push_back(vz); // Z
 			model_coefficients.push_back(1.0f); // W
 
+			this->bbox_min.x = std::min(bbox_min.x, vx);
+			this->bbox_min.y = std::min(bbox_min.y, vy);
+			this->bbox_min.z = std::min(bbox_min.z, vz);
+			this->bbox_max.x = std::max(bbox_max.x, vx);
+			this->bbox_max.y = std::max(bbox_max.y, vy);
+			this->bbox_max.z = std::max(bbox_max.z, vz);
 			
 			if (idx.normal_index != -1)
 			{
@@ -148,6 +160,10 @@ void Mesh::LoadFromObj(const char* filename, const char* basepath)
 
 	this->texture_coefficients = texture_coefficients.data();
 	this->numTextureComponents = texture_coefficients.size();
+	if (numTextureComponents != 0)
+	{
+		this->usingTextureCoords = true;
+	}
 
 	this->color_coefficients = color_coefficients.data();
 

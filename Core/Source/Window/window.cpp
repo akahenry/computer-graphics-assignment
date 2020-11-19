@@ -47,6 +47,7 @@ Window::Window(int width, int height, const char* name)
 	projection_uniform = glGetUniformLocation(program_id, "projection");
 	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black");
 	using_texture_uniform = glGetUniformLocation(program_id, "using_texture");
+	using_texture_coords_uniform = glGetUniformLocation(program_id, "using_texture_coords");
 
 	// Habilitamos o Z-buffer
 	glEnable(GL_DEPTH_TEST);
@@ -210,13 +211,20 @@ void Window::DrawText(const std::string str, float x, float y, float scale)
 	TextRendering_PrintString(this->window, str, x, y, scale);
 }
 
-void Window::DrawMesh(Mesh mesh)
+void Window::DrawMesh(Mesh mesh, bool usingTexture)
 {
 	glBindVertexArray(mesh.vaoId);
 
+	GLuint bbox_min_uniform = glGetUniformLocation(program_id, "bbox_min");
+    GLuint bbox_max_uniform = glGetUniformLocation(program_id, "bbox_max");
+
+	glUniform4f(bbox_min_uniform, mesh.bbox_min.x, mesh.bbox_min.y, mesh.bbox_min.z, 1.0f);
+    glUniform4f(bbox_max_uniform, mesh.bbox_max.x, mesh.bbox_max.y, mesh.bbox_max.z, 1.0f);
+
 	glUniformMatrix4fv(model_uniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniform1i(render_as_black_uniform, false);
-	glUniform1i(using_texture_uniform, false); // mesh.usingTexture
+	glUniform1i(using_texture_uniform, usingTexture);
+	glUniform1i(using_texture_coords_uniform, mesh.usingTextureCoords);
 
 	glUseProgram(this->defaultShader.program_id);
 
@@ -227,6 +235,11 @@ void Window::DrawMesh(Mesh mesh)
 		0
 	);
 	glBindVertexArray(0);
+}
+
+void Window::DrawMesh(Mesh mesh)
+{
+	this->DrawMesh(mesh, false);
 }
 
 void Window::SetCamera(Camera* camera)
@@ -256,8 +269,14 @@ void Window::DrawObject(GraphicObject object)
 	glUniform3fv(ambient_reflectance_id, 1, glm::value_ptr(ambient_reflectance));
 	glUniform1f(phong_exponent_id, phong_exponent);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, object.texture.texture_id);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8, object.texture.width, object.texture.height, 0, GL_RGB, GL_UNSIGNED_BYTE, object.texture.data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindSampler(object.texture.texture_unit, object.texture.sampler_id);
+
 	this->CalcModelFromObject(object);
-	this->DrawMesh(*(object.mesh));
+	this->DrawMesh(*(object.mesh), object.usingTexture);
 }
 
 void Window::DrawScene(Scene scene)

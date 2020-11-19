@@ -78,6 +78,9 @@
     <ClInclude Include="Core\Headers\object.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Headers\texture.hpp">
+      <Filter>Header files\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Source\Engine\engine.cpp">
@@ -129,6 +132,9 @@
       <Filter>Source files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Core\Source\Engine\object.cpp">
+      <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Source\Engine\texture.cpp">
       <Filter>Source files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
