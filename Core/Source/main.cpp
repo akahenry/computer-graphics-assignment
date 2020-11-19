@@ -36,12 +36,17 @@ int main()
 	GraphicObject player1({ 0,0,0 }, &carMesh, defaultReflectance, 100);
 	player1.SetTexture("textures/Crysler_new_yorker_Color.png");
 	player1.scale = Vector3(0.005, 0.005, 0.005);
+	player1.rotationAngle = PI / 2;
+
+	Mesh flagMesh;
+	flagMesh.LoadFromObj("Models/flag.obj", "Models/");
+	GraphicObject flag({ -10, 0, 0 }, &flagMesh, defaultReflectance, 100);
+	flag.scale = Vector3(0.05, 0.05, 0.05);
 
 	FreeCamera freeCamera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
 	LookAtCamera lookAtCamera = LookAtCamera(player1.position, Vector3(10, 10, -10), -0.1f, -100.0f);
-	Camera* camera = &lookAtCamera;
 	bool isLookAt = true;
-	window.SetCamera(camera);
+	window.SetCamera(&lookAtCamera);
 
 	LightSource light = LightSource({ 0, -10, 0 }, { 1, 1, 1 }, {0.2, 0.2, 0.2}, LightType::Phong);
 
@@ -49,6 +54,7 @@ int main()
 	scene1.AddLight(&light);
 	scene1.AddObject(&road);
 	scene1.AddObject(&player1);
+	scene1.AddObject(&flag);
 
 	float t = 0;
 	bool buttonPressed = false;
@@ -57,7 +63,6 @@ int main()
 
     while (!window.ShouldClose())
     {
-		window.SetCamera(camera);
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 
 		if (buttonPressed && !buttonPressedLastFrame)
@@ -77,7 +82,7 @@ int main()
 		Vector3 motion = Vector3(0,0,0);
 		if (Input::IsButtonPressed(GLFW_KEY_W))
 		{
-			motion.z = 0.01;
+			motion.z = -0.01;
 		}
 		if (Input::IsButtonPressed(GLFW_KEY_A))
 		{
@@ -85,7 +90,7 @@ int main()
 		}
 		if (Input::IsButtonPressed(GLFW_KEY_S))
 		{
-			motion.z = -0.01;
+			motion.z = +0.01;
 		}
 		if (Input::IsButtonPressed(GLFW_KEY_D))
 		{
@@ -94,12 +99,12 @@ int main()
 		if (Input::IsButtonPressed(GLFW_KEY_F))
 		{
 			isLookAt = false;
-			camera = &freeCamera;
+			window.SetCamera(&freeCamera);
 		}
 		if (Input::IsButtonPressed(GLFW_KEY_L))
 		{
 			isLookAt = true;
-			camera = &lookAtCamera;
+			window.SetCamera(&lookAtCamera);
 		}
 		// camera.MoveCameraRelatively(motion);
 
@@ -107,10 +112,8 @@ int main()
 
 		if (isLookAt)
 			lookAtCamera.pointToLookAt = player1.position;
-		else
+		else if (mouseEscondido)
 			freeCamera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
-		
-		std::cout << freeCamera.horizontalAngle;
 
 		buttonPressedLastFrame = buttonPressed;
 
