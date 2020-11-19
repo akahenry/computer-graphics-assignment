@@ -37,9 +37,11 @@ int main()
 	player1.SetTexture("textures/Crysler_new_yorker_Color.png");
 	player1.scale = Vector3(0.005, 0.005, 0.005);
 
-	//FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
-	LookAtCamera camera = LookAtCamera(player1.position, Vector3(10, 10, -10), -0.1f, -100.0f);
-	window.SetCamera(&camera);
+	FreeCamera freeCamera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
+	LookAtCamera lookAtCamera = LookAtCamera(player1.position, Vector3(10, 10, -10), -0.1f, -100.0f);
+	Camera* camera = &lookAtCamera;
+	bool isLookAt = true;
+	window.SetCamera(camera);
 
 	LightSource light = LightSource({ 0, -10, 0 }, { 1, 1, 1 }, {0.2, 0.2, 0.2}, LightType::Phong);
 
@@ -55,6 +57,7 @@ int main()
 
     while (!window.ShouldClose())
     {
+		window.SetCamera(camera);
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 
 		if (buttonPressed && !buttonPressedLastFrame)
@@ -88,13 +91,26 @@ int main()
 		{
 			motion.x = 0.01;
 		}
+		if (Input::IsButtonPressed(GLFW_KEY_F))
+		{
+			isLookAt = false;
+			camera = &freeCamera;
+		}
+		if (Input::IsButtonPressed(GLFW_KEY_L))
+		{
+			isLookAt = true;
+			camera = &lookAtCamera;
+		}
 		// camera.MoveCameraRelatively(motion);
 
 		player1.position += motion;
-		camera.pointToLookAt = player1.position;
 
-		//if (mouseEscondido)
-		//	camera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
+		if (isLookAt)
+			lookAtCamera.pointToLookAt = player1.position;
+		else
+			freeCamera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
+		
+		std::cout << freeCamera.horizontalAngle;
 
 		buttonPressedLastFrame = buttonPressed;
 
