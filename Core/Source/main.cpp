@@ -40,7 +40,8 @@ int main()
 
 	Mesh flagMesh;
 	flagMesh.LoadFromObj("Models/flag.obj", "Models/");
-	GraphicObject flag({ -10, 0, 0 }, &flagMesh, defaultReflectance, 100);
+	GraphicObject flag({ 0, 0, 2 }, &flagMesh, defaultReflectance, 100);
+	flag.SetTexture("Textures/flag.jpg");
 	flag.scale = Vector3(0.05, 0.05, 0.05);
 
 	FreeCamera freeCamera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
