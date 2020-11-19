@@ -8,7 +8,6 @@
 
 int main()
 {
-	clock_t tStart = clock();
 	Engine engine = Engine();
 
 	Window window = Window(800, 600, "The Labyrinth");
@@ -16,7 +15,7 @@ int main()
 	ReflectanceComponents defaultReflectance;
 	defaultReflectance.diffuse = Vector3(0.08, 0.4, 0.8);
 	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);
-	defaultReflectance.ambient = defaultReflectance.diffuse/2;
+	defaultReflectance.ambient = defaultReflectance.specular/2;
 
 	/*Mesh boxMesh;
 	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
@@ -27,39 +26,27 @@ int main()
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
 	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
 
-	Mesh bunnyMesh;
-	bunnyMesh.LoadFromObj("bunny.obj");
-	GraphicObject bunny({ 0,0,-5 }, &bunnyMesh, defaultReflectance, 100);
+	Mesh roadMesh;
+	roadMesh.LoadFromObj("Models/road.obj");
+	GraphicObject road({ 0,0,-5 }, &roadMesh, defaultReflectance, 100);
+	road.SetTexture("textures/road-texture.jpg");
 
-	Mesh penguinMesh;
-	penguinMesh.LoadFromObj("PenguinBaseMesh.obj");
-	GraphicObject penguin({ 5,0,-5 }, &penguinMesh, defaultReflectance, 100);
-	penguin.SetTexture("Penguin Diffuse Color.png");
-	GraphicObject penguin2({ 10,0,-5 }, &penguinMesh, defaultReflectance, 100);
+	Mesh carMesh;
+	carMesh.LoadFromObj("Models/Crysler_new_yorker_1980.obj");
+	GraphicObject player1({ 0,0,0 }, &carMesh, defaultReflectance, 100);
+	player1.SetTexture("textures/Crysler_new_yorker_Color.png");
+	player1.scale = Vector3(0.005, 0.005, 0.005);
 
-	Texture worldTexture = Texture("world.png");
-	penguin2.SetTexture(worldTexture);
-	bunny.SetTexture(worldTexture);
-
-	FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
+	//FreeCamera camera = FreeCamera({ 0,0,0 },-0.1f,-2000.f);
+	LookAtCamera camera = LookAtCamera(player1.position, Vector3(10, 10, -10), -0.1f, -100.0f);
 	window.SetCamera(&camera);
 
-	LightSource light = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, {0.2, 0.2, 0.2}, LightType::Phong);
-	LightSource gouraudLight = LightSource({ 5, 0, -5 }, { 1, 1, 1 }, { 0.2, 0.2, 0.2 }, LightType::Gouraud);
+	LightSource light = LightSource({ 0, -10, 0 }, { 1, 1, 1 }, {0.2, 0.2, 0.2}, LightType::Phong);
 
 	Scene scene1;
 	scene1.AddLight(&light);
-	scene1.AddObject(&bunny);
-	scene1.AddObject(&penguin);
-	scene1.AddObject(&penguin2);
-
-	Scene scene2;
-	scene2.AddLight(&gouraudLight);
-	scene2.AddObject(&bunny);
-	scene2.AddObject(&penguin);
-	scene2.AddObject(&penguin2);
-	/*scene1.AddObject(&box);
-	scene1.AddObject(&ground);*/
+	scene1.AddObject(&road);
+	scene1.AddObject(&player1);
 
 	float t = 0;
 	bool buttonPressed = false;
@@ -68,10 +55,6 @@ int main()
 
     while (!window.ShouldClose())
     {
-		t += 0.001;
-		bunny.rotationAngle = t;
-		bunny.position.y = sin(t);
-
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
 
 		if (buttonPressed && !buttonPressedLastFrame)
@@ -105,10 +88,13 @@ int main()
 		{
 			motion.x = 0.01;
 		}
-		camera.MoveCameraRelatively(motion);
+		// camera.MoveCameraRelatively(motion);
 
-		if (mouseEscondido)
-			camera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
+		player1.position += motion;
+		camera.pointToLookAt = player1.position;
+
+		//if (mouseEscondido)
+		//	camera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
 
 		buttonPressedLastFrame = buttonPressed;
 
