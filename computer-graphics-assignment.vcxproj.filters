@@ -25,6 +25,12 @@
     <Filter Include="Resource files\tiny_obj_loader">
       <UniqueIdentifier>{2ceb040e-72e6-48e7-8a70-4ce77ff3b47d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header files\Game">
+      <UniqueIdentifier>{4400576a-29af-49d9-9ca0-91d6ca4a0abb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Game">
+      <UniqueIdentifier>{1c4b865d-db71-4ec8-b2a8-860afb695fe2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\dejavufont.h">
@@ -81,6 +87,9 @@
     <ClInclude Include="Core\Headers\texture.hpp">
       <Filter>Header files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Headers\utils.hpp">
+      <Filter>Header files\Game</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Source\Engine\engine.cpp">
@@ -136,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="Core\Source\Engine\texture.cpp">
       <Filter>Source files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Source\utils.cpp">
+      <Filter>Source files\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

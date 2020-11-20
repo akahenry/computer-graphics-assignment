@@ -33,6 +33,7 @@
     <ClInclude Include="Core\Headers\texture.hpp" />
     <ClInclude Include="Core\Headers\vector.hpp" />
     <ClInclude Include="Core\Headers\window.hpp" />
+    <ClInclude Include="Game\Headers\utils.hpp" />
     <ClInclude Include="Include\dejavufont.h" />
     <ClInclude Include="Include\tiny_obj_loader\stb_image.h" />
     <ClInclude Include="Include\tiny_obj_loader\tiny_obj_loader.h" />
@@ -54,6 +55,7 @@
     <ClCompile Include="Core\Source\Engine\vector.cpp" />
     <ClCompile Include="Core\Source\main.cpp" />
     <ClCompile Include="Core\Source\Window\window.cpp" />
+    <ClCompile Include="Game\Source\utils.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
     <ClCompile Include="Include\tiny_obj_loader\stb_image.cpp" />
     <ClCompile Include="Include\tiny_obj_loader\tiny_obj_loader.cpp" />
@@ -143,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)Core\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;$(ProjectDir)Game\Headers;$(ProjectDir)Core\Headers;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
