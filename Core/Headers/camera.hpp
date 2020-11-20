@@ -2,6 +2,8 @@
 
 #include <vector.hpp>
 #include <cmath>
+#include <algorithm>
+#include <iostream>
 #define PI 3.141592653589793238462643383279502884L
 
 class Camera

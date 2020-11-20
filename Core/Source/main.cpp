@@ -39,12 +39,11 @@ int main()
 
 	Mesh carMesh;
 	carMesh.LoadFromObj("Models/Crysler_new_yorker_1980.obj");
-	GraphicObject car({ 0,0,0 }, &carMesh, defaultReflectance, 100);
+	GraphicObject car({ 4,0,-2 }, &carMesh, defaultReflectance, 100);
 	car.SetTexture("textures/Crysler_new_yorker_Color.png");
 	car.scale = Vector3(0.005, 0.005, 0.005);
 	car.origin = Vector3(0, 0, 1);
 	car.rotationAxis = {0,1,0};
-	car.rotationAngle = PI / 2;
 
 	Mesh flagMesh;
 	flagMesh.LoadFromObj("Models/flag.obj", "Models/");
@@ -106,7 +105,7 @@ int main()
 			freeCamera.setViewVector(lookAtCamera.getViewVector());
 
 			cameraAnimationDestPosition = {
-				car.position.x + 0.7f * sin(car.rotationAngle + 0.05f),
+				car.position.x - 0.7f * sin(car.rotationAngle + 0.05f),
 				car.position.y + 0.75f,
 				car.position.z - 0.7f * cos(car.rotationAngle + 0.05f)
 			};
@@ -170,8 +169,6 @@ int main()
 					cameraIsBeingAnimated = false;
 				}
 
-				std::cout << animationT << std::endl;
-
 				Vector3 p1 = freeCamera.position;
 				Vector3 p4 = cameraAnimationDestPosition;
 				Vector3 p2 = (p4 - p1).ProjectedOnto(lookAtCamera.getViewVector()) * 1/3 + p1;
@@ -202,11 +199,11 @@ int main()
 				{
 					motion.x = speed;
 				}
+				float ypos = freeCamera.position.y;
 				freeCamera.MoveCameraRelatively(motion);
+				freeCamera.position.y = ypos;
 			}
 		}
-		
-		flag.position = MovementUtility::Bezier(std::vector<Vector3>{ { 0, 0, 0 }, { 10,10,0 }, { -10,10,0 }, { 0,0,0 }}, t/10);
 
 		buttonPressedLastFrame = buttonPressed;
 

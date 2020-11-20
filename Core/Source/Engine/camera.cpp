@@ -60,6 +60,8 @@ void FreeCamera::MoveCameraAngle(Vector2 deltaAngle)
 {
 	horizontalAngle += deltaAngle.x;
 	verticalAngle += deltaAngle.y;
+	verticalAngle = std::min(std::max(verticalAngle, (float)-PI/2+0.0001f), (float)PI/2-0.0001f);
+	std::cout << verticalAngle << std::endl;
 }
 
 void FreeCamera::setViewVector(Vector3 view)
