@@ -4,10 +4,12 @@
 #include <vector.hpp>
 #include <object.hpp>
 #include <math.h>
+#include <iostream>
 
 namespace MovementUtility
 {
     Vector3 Bezier(std::vector<Vector3> controlPoints, float t);
+	Vector3 FlagPosition(GraphicObject road, int number);
 };
 
 namespace CollisionUtility

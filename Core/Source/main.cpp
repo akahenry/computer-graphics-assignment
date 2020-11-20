@@ -32,6 +32,9 @@ int main()
 	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
 	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
 
+	int score = 0;
+	auto begin_lap = glfwGetTime();
+
 	Mesh roadMesh;
 	roadMesh.LoadFromObj("Models/road.obj");
 	GraphicObject road({ 0,0,-5 }, &roadMesh, defaultReflectance, 100);
@@ -45,9 +48,16 @@ int main()
 	car.origin = Vector3(0, 0, 1);
 	car.rotationAxis = {0,1,0};
 
+	Mesh cowMesh;
+	cowMesh.LoadFromObj("Models/cow.obj");
+	GraphicObject cow1({ 0,0,0 }, &cowMesh, defaultReflectance, 100);
+	cow1.rotationAxis = { 0,1,0 };
+	GraphicObject cow2({ 5,0,0 }, &cowMesh, defaultReflectance, 100);
+	cow2.rotationAxis = { 0,1,0 };
+
 	Mesh flagMesh;
 	flagMesh.LoadFromObj("Models/flag.obj", "Models/");
-	GraphicObject flag({ 0, 0, 2 }, &flagMesh, defaultReflectance, 100);
+	GraphicObject flag(MovementUtility::FlagPosition(road, score), &flagMesh, defaultReflectance, 100);
 	flag.SetTexture("Textures/flag.jpg");
 	flag.scale = Vector3(0.05, 0.05, 0.05);
 
@@ -58,6 +68,8 @@ int main()
 	scene1.AddObject(&road);
 	scene1.AddObject(&car);
 	scene1.AddObject(&flag);
+	scene1.AddObject(&cow1);
+	scene1.AddObject(&cow2);
 
 	float animationT = 0; // a animação de transição de primeira pra terceira pessoa usa um t de 0 a 1
 	bool cameraIsBeingAnimated = false;
@@ -68,6 +80,8 @@ int main()
 	bool buttonPressedLastFrame = false; // talvez seja interessante passar essa funcionalidade pra classe input
 	bool hiddenMouse = false;
 	float relativeLookAtHorizontalRotation = 0;
+	float carSpeed = 0.05;
+	float speed = 5;
 
     while (!window.ShouldClose())
     {
@@ -91,7 +105,6 @@ int main()
 
 		Vector3 motion = Vector3(0,0,0);
 		float carHorizontalRotation = 0;
-		float speed = 0.05;
 
 
 		if (Input::IsButtonPressed(GLFW_KEY_F))
@@ -118,40 +131,69 @@ int main()
 			window.SetCamera(&lookAtCamera);
 		}
 
+		if (Input::IsButtonPressed(GLFW_KEY_G))
+		{
+			light.lightType = LightType::Gouraud;
+		}
+		if (Input::IsButtonPressed(GLFW_KEY_P))
+		{
+			light.lightType = LightType::Phong;
+		}
+
 		if (isLookAt)
 		{
 			lookAtCamera.pointToLookAt = car.position;
 
 			if (Input::IsButtonPressed(GLFW_KEY_W))
 			{
-				motion.z = -sin(car.rotationAngle) * speed;
-				motion.x = cos(car.rotationAngle) * speed;
+				carSpeed += 0.01;
 			}
+			else if (Input::IsButtonPressed(GLFW_KEY_S))
+			{
+				carSpeed = std::max(carSpeed - 0.005, -1.0);
+			}
+			else
+			{
+				carSpeed = std::max(carSpeed - 0.005, 0.0);
+			}
+
 			if (Input::IsButtonPressed(GLFW_KEY_A))
 			{
 				carHorizontalRotation = PI / 2;
 			}
-			if (Input::IsButtonPressed(GLFW_KEY_S))
-			{
-				motion.z = sin(car.rotationAngle) * speed;
-				motion.x = -cos(car.rotationAngle) * speed;
-			}
+			
 			if (Input::IsButtonPressed(GLFW_KEY_D))
 			{
 				carHorizontalRotation = -PI / 2;
 			}
+			
+
+			motion.z = -sin(car.rotationAngle) * carSpeed * window.GetDeltaTime();
+			motion.x = cos(car.rotationAngle) * carSpeed * window.GetDeltaTime();
 
 			car.position += motion;
 			car.rotationAngle += carHorizontalRotation * window.GetDeltaTime();
 			
-			if (CollisionUtility::RectangleRectangle(car, flag))
+			if (CollisionUtility::SpherePoint(flag, car.position))
 			{
-				car.position = Vector3(4, 0, -2);
+				score++;
+				flag.position = MovementUtility::FlagPosition(road, score);
+
+				if (!(score % 4))
+				{
+					std::cout << "Time lap: " << glfwGetTime() - begin_lap << '\n';
+					begin_lap = glfwGetTime();
+				}
 			}
 
 			if (!CollisionUtility::RectangleRectangle(car, road))
 			{
-				car.position.y -= 10 * window.GetDeltaTime();
+				car.position.y -= 800 * pow(window.GetDeltaTime(), 2);
+			}
+
+			if (car.position.y <= -20)
+			{
+				car.position = Vector3(4, 0, -2);
 			}
 
 			if (hiddenMouse)
@@ -164,8 +206,6 @@ int main()
 				car.position.y + 5,
 				car.position.z + 5 * sin(car.rotationAngle + relativeLookAtHorizontalRotation)
 			};
-
-			
 		}
 		// Free Camera
 		else
@@ -173,10 +213,10 @@ int main()
 			// Está na transição de teceira e primeira pessoa
 			if (cameraIsBeingAnimated)
 			{
-				float animationSpeed = 0.01;
+				float animationSpeed = 0.01 * window.GetDeltaTime();
 				animationT += animationSpeed;
 
-				if (animationT > 0.49)
+				if (animationT > (12*window.GetDeltaTime()))
 				{
 					cameraIsBeingAnimated = false;
 				}
@@ -187,8 +227,6 @@ int main()
 				Vector3 p3 = (p4 - p1).ProjectedOnto(lookAtCamera.getViewVector()) * 2/3 + (p4 - p1).RejectedOnto(lookAtCamera.getViewVector()) + p1;
 				freeCamera.position = MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT);
 				//freeCamera.setViewVector(freeCamera.position - MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT-animationSpeed));
-
-				
 			}
 			else
 			{
@@ -213,16 +251,23 @@ int main()
 				{
 					motion.x = speed;
 				}
+				motion = motion * window.GetDeltaTime();
+
 
 				float ypos = freeCamera.position.y;
 				freeCamera.MoveCameraRelatively(motion);
 
-				//freeCamera.position.y = ypos;
+				if (CollisionUtility::RectanglePoint(road, freeCamera.position - Vector3(0, freeCamera.position.y - road.position.y, 0)))
+				{
+					freeCamera.position.y = ypos;
+				}
+				
 
 				if (CollisionUtility::RectanglePoint(car, freeCamera.position))
 				{
 					freeCamera.MoveCameraRelatively(-motion);
 				}
+
 			}
 		}
 

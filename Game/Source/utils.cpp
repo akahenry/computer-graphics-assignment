@@ -1,5 +1,6 @@
 ﻿#include <utils.hpp>
 
+
 Vector3 MovementUtility::Bezier(std::vector<Vector3> controlPoints, float t)
 {
     Vector3 result(0, 0, 0);
@@ -12,6 +13,18 @@ Vector3 MovementUtility::Bezier(std::vector<Vector3> controlPoints, float t)
     }
 
     return result;
+}
+
+Vector3 MovementUtility::FlagPosition(GraphicObject road, int number)
+{
+	Vector3 global_bbox_min;
+	Vector3 global_bbox_max;
+	
+	Utility::CalculateGlobalBoundingBox(road, &global_bbox_min, &global_bbox_max);
+
+	std::vector<Vector3> points = { global_bbox_min * 0.8, Vector3(global_bbox_min.x, global_bbox_min.y, global_bbox_max.z) * 0.8, global_bbox_max * 0.8, Vector3(global_bbox_max.x, global_bbox_max.y, global_bbox_min.z) * 0.8, global_bbox_min * 0.8 };
+
+	return points[number%4];
 }
 
 bool CollisionUtility::SpherePoint(GraphicObject obj, Vector3 point)
