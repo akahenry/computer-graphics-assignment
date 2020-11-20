@@ -3,7 +3,7 @@
 Vector3 MovementUtility::Bezier(std::vector<Vector3> controlPoints, float t)
 {
     Vector3 result(0, 0, 0);
-    int n = controlPoints.size();
+    int n = controlPoints.size() - 1;
     t -= floor(t);
 
     for (int i = 0; i < controlPoints.size(); i++)
