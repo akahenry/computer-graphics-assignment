@@ -23,15 +23,6 @@ int main()
 	defaultReflectance.specular = Vector3(0.8, 0.8, 0.8);
 	defaultReflectance.ambient = defaultReflectance.specular/2;
 
-	/*Mesh boxMesh;
-	boxMesh.MakeBox({ 0, 0, -5 }, { 2, 2, 2 });
-	boxMesh.rotationAxis = {0, 1.0, 0};
-	GraphicObject box(&boxMesh, defaultReflectance, 32);
-
-	Mesh groundMesh;
-	groundMesh.MakeBox({ 0, -3, -5 }, { 10, 1, 10 });
-	GraphicObject ground(&groundMesh, defaultReflectance, 1);*/
-
 	int score = 0;
 	auto begin_lap = glfwGetTime();
 
@@ -71,7 +62,7 @@ int main()
 	scene1.AddObject(&cow1);
 	scene1.AddObject(&cow2);
 
-	float animationT = 0; // a anima��o de transi��o de primeira pra terceira pessoa usa um t de 0 a 1
+	float animationT = 0; // a anima��o de transi��o de primeira pra terceira pessoa usa um t de 0 a 1
 	bool cameraIsBeingAnimated = false;
 	Vector3 cameraAnimationDestPosition;
 
@@ -85,8 +76,8 @@ int main()
 
     while (!window.ShouldClose())
     {
+		// Mostra ou esconde o mouse se a tela ta selecionada
 		buttonPressed = Input::IsButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
-
 		if (buttonPressed && !buttonPressedLastFrame)
 		{
 			if (hiddenMouse)
@@ -106,7 +97,7 @@ int main()
 		Vector3 motion = Vector3(0,0,0);
 		float carHorizontalRotation = 0;
 
-
+		// Começa a usar a freeCamera
 		if (Input::IsButtonPressed(GLFW_KEY_F))
 		{
 			isLookAt = false;
@@ -123,6 +114,8 @@ int main()
 				car.position.z - 0.7f * cos(car.rotationAngle + 0.05f)
 			};
 		}
+
+		// Começa a usar a look-at camera
 		if (Input::IsButtonPressed(GLFW_KEY_L))
 		{
 			isLookAt = true;
@@ -140,10 +133,12 @@ int main()
 			light.lightType = LightType::Phong;
 		}
 
+		// A look-at tem o ponto que ela está olhando atualizado todo frame para a posição do carro
 		if (isLookAt)
 		{
 			lookAtCamera.pointToLookAt = car.position;
 
+			// O carro só pode se mover quando for a camera look-at
 			if (Input::IsButtonPressed(GLFW_KEY_W))
 			{
 				carSpeed += 0.01;
@@ -157,6 +152,7 @@ int main()
 				carSpeed = std::max(carSpeed - 0.005, 0.0);
 			}
 
+			// Rotaciona o carro para ter um movimento mais intuitivo
 			if (Input::IsButtonPressed(GLFW_KEY_A))
 			{
 				carHorizontalRotation = PI / 2;
@@ -167,13 +163,14 @@ int main()
 				carHorizontalRotation = -PI / 2;
 			}
 			
-
 			motion.z = -sin(car.rotationAngle) * carSpeed * window.GetDeltaTime();
 			motion.x = cos(car.rotationAngle) * carSpeed * window.GetDeltaTime();
 
 			car.position += motion;
 			car.rotationAngle += carHorizontalRotation * window.GetDeltaTime();
 			
+
+			// Verifica se o carro pegou algum checkpoint
 			if (CollisionUtility::SpherePoint(flag, car.position))
 			{
 				score++;
@@ -186,6 +183,7 @@ int main()
 				}
 			}
 
+			// Mantém o carro em cima da pista
 			if (!CollisionUtility::RectangleRectangle(car, road))
 			{
 				car.position.y -= 800 * pow(window.GetDeltaTime(), 2);
@@ -201,6 +199,7 @@ int main()
 				relativeLookAtHorizontalRotation += -Input::Mouse::mousePositionDelta.x * 0.001;
 			}
 
+			// A posição da camera é atualizada de acordo com a rotação do carro, para ter uma camera mais intuitiva
 			lookAtCamera.position = {
 				car.position.x - 5 * cos(car.rotationAngle + relativeLookAtHorizontalRotation),
 				car.position.y + 5,
@@ -210,7 +209,7 @@ int main()
 		// Free Camera
 		else
 		{
-			// Est� na transi��o de teceira e primeira pessoa
+			// Est� na transi��o de teceira e primeira pessoa
 			if (cameraIsBeingAnimated)
 			{
 				float animationSpeed = 0.01 * window.GetDeltaTime();
@@ -226,7 +225,6 @@ int main()
 				Vector3 p2 = (p4 - p1).ProjectedOnto(lookAtCamera.getViewVector()) * 1/3 + p1;
 				Vector3 p3 = (p4 - p1).ProjectedOnto(lookAtCamera.getViewVector()) * 2/3 + (p4 - p1).RejectedOnto(lookAtCamera.getViewVector()) + p1;
 				freeCamera.position = MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT);
-				//freeCamera.setViewVector(freeCamera.position - MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT-animationSpeed));
 			}
 			else
 			{
@@ -257,12 +255,13 @@ int main()
 				float ypos = freeCamera.position.y;
 				freeCamera.MoveCameraRelatively(motion);
 
+				// Verifica se a posição da camera tem intersecção com a pista, impedindo que a camera atravesse a pista
 				if (CollisionUtility::RectanglePoint(road, freeCamera.position - Vector3(0, freeCamera.position.y - road.position.y, 0)))
 				{
 					freeCamera.position.y = ypos;
 				}
 				
-
+				// Verifica se a posição da camera tem intersecção com o carro, impedindo que a camera atravesse o carro
 				if (CollisionUtility::RectanglePoint(car, freeCamera.position))
 				{
 					freeCamera.MoveCameraRelatively(-motion);
