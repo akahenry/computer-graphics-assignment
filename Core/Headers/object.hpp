@@ -2,6 +2,7 @@
 
 #include <mesh.hpp>
 #include <texture.hpp>
+#include <glm/mat4x4.hpp>
 
 struct ReflectanceComponents
 {
@@ -29,4 +30,5 @@ public:
     void SetMesh(Mesh* mesh);
     void SetTexture(Texture texture);
     void SetTexture(const char* filename);
+	void MoveRelatively(Vector3 delta);
 };

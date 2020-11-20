@@ -29,6 +29,7 @@ public:
 
 	FreeCamera(Vector3 position = Vector3(0, 0, 0), float near = -0.1f, float far = -10.0f, float fov = PI / 2, float horizontalAngle = PI, float verticalAngle = 0);
 	void MoveCameraAngle(Vector2 deltaAngle);
+	void setViewVector(Vector3 view);
 
 	Vector3 getViewVector();
 };

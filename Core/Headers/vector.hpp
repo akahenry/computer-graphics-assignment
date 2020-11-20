@@ -13,6 +13,8 @@ class Vector3
 		Vector3 Normalized();
 		Vector3 CrossProduct(Vector3 other);
 		float DotProduct(Vector3 other);
+		Vector3 ProjectedOnto(Vector3 other);
+		Vector3 RejectedOnto(Vector3 other);
 		Vector3 operator+(const Vector3 other);
 		Vector3& operator+=(const Vector3& other);
 		Vector3 operator-(const Vector3 other);

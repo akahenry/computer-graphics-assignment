@@ -61,3 +61,9 @@ void FreeCamera::MoveCameraAngle(Vector2 deltaAngle)
 	horizontalAngle += deltaAngle.x;
 	verticalAngle += deltaAngle.y;
 }
+
+void FreeCamera::setViewVector(Vector3 view)
+{
+	this->horizontalAngle = atan2(view.Normalized().x, view.Normalized().z);
+	this->verticalAngle = asin(view.Normalized().y);
+}

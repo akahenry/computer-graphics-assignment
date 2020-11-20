@@ -33,6 +33,16 @@ float Vector3::DotProduct(Vector3 other)
 	return x * other.x + y * other.y + z * other.z;
 }
 
+Vector3 Vector3::ProjectedOnto(Vector3 other)
+{
+	return other.Normalized() * this->DotProduct(other.Normalized());
+}
+Vector3 Vector3::RejectedOnto(Vector3 other)
+{
+	Vector3 p = this->ProjectedOnto(other);
+	return Vector3(this->x - p.x, this->y - p.y, this->z - p.z);
+}
+
 Vector3 Vector3::operator+(const Vector3 other)
 {
 	return Vector3(x + other.x, y + other.y, z + other.z);
