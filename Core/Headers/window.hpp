@@ -8,6 +8,8 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <chrono>
+#include <thread>
 
 #include <error.hpp>
 #include <shader.hpp>
@@ -42,6 +44,9 @@ private:
 	GLint using_texture_uniform;
 	GLint using_texture_coords_uniform;
 	Shader defaultShader;
+	double framerate = -1;
+	double deltaTime = 0; // tempo desde o ultimo desenho da tela
+	double lastTimeDrawn; // o tempo absoluto em que foi desenhado da ultima vez
 
     void SetFrameBufferSizeCallback(GLFWframebuffersizefun callback);
 	void CalcViewMatrix();
@@ -82,5 +87,8 @@ public:
 	float GetScreenRatio();
 	void SetCursorType(int type);
 	void DrawScene(Scene scene);
+	void SetFrameRateLimit(double framerate);
+	double GetDeltaTime(); // in seconds
+	double GetCurrentFramerate();
 };
 #endif

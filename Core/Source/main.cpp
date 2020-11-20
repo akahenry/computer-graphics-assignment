@@ -3,7 +3,6 @@
 #include <window.hpp>
 #include <mesh.hpp>
 #include <color.hpp>
-#include <ctime>
 
 
 int main()
@@ -11,6 +10,7 @@ int main()
 	Engine engine = Engine();
 
 	Window window = Window(800, 600, "The Labyrinth");
+	window.SetFrameRateLimit(100);
 
 	ReflectanceComponents defaultReflectance;
 	defaultReflectance.diffuse = Vector3(0.08, 0.4, 0.8);
@@ -36,6 +36,8 @@ int main()
 	GraphicObject player1({ 0,0,0 }, &carMesh, defaultReflectance, 100);
 	player1.SetTexture("textures/Crysler_new_yorker_Color.png");
 	player1.scale = Vector3(0.005, 0.005, 0.005);
+	player1.origin = Vector3(0, 0, 1);
+	player1.rotationAxis = {0,1,0};
 	player1.rotationAngle = PI / 2;
 
 	Mesh flagMesh;
@@ -60,7 +62,7 @@ int main()
 	float t = 0;
 	bool buttonPressed = false;
 	bool buttonPressedLastFrame = false; // talvez seja interessante passar essa funcionalidade pra classe input
-	bool mouseEscondido = false;
+	bool hiddenMouse = false;
 
     while (!window.ShouldClose())
     {
@@ -68,15 +70,15 @@ int main()
 
 		if (buttonPressed && !buttonPressedLastFrame)
 		{
-			if (mouseEscondido)
+			if (hiddenMouse)
 			{
 				window.SetCursorType(CURSOR_NORMAL);
-				mouseEscondido = false;
+				hiddenMouse = false;
 			}
 			else
 			{
 				window.SetCursorType(CURSOR_DISABLED);
-				mouseEscondido = true;
+				hiddenMouse = true;
 			}
 		}
 
@@ -110,10 +112,11 @@ int main()
 		// camera.MoveCameraRelatively(motion);
 
 		player1.position += motion;
+		player1.rotationAngle += PI*window.GetDeltaTime();
 
 		if (isLookAt)
 			lookAtCamera.pointToLookAt = player1.position;
-		else if (mouseEscondido)
+		else if (hiddenMouse)
 			freeCamera.MoveCameraAngle(-Input::Mouse::mousePositionDelta * 0.001);
 
 		buttonPressedLastFrame = buttonPressed;

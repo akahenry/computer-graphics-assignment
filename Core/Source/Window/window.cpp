@@ -175,11 +175,28 @@ void Window::CalcModelFromObject(GraphicObject obj)
 		0.0f, 0.0f, 0.0f, 1.0f
 	);
 
-	this->modelMatrix = T * R * S;
+	glm::mat4 O = MakeGlmMatrix(
+		1.0f, 0.0f, 0.0f, obj.origin.x,
+		0.0f, 1.0f, 0.0f, obj.origin.y,
+		0.0f, 0.0f, 1.0f, obj.origin.z,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+
+	this->modelMatrix = T * R * O * S;
 }
 
 void Window::PreDrawing(Color clearColor)
 {
+	double now = glfwGetTime();
+	deltaTime = now - lastTimeDrawn;
+	lastTimeDrawn = now;
+
+	if (framerate != -1)
+	{
+		auto end = std::chrono::steady_clock::now() + std::chrono::milliseconds((long)(1000/framerate - 1000*deltaTime));
+		std::this_thread::sleep_until(end);
+	}
+
 	this->ClearWindow(clearColor);
 	this->CalcViewMatrix();
 	this->CalcProjectionMatrix();
@@ -286,4 +303,20 @@ void Window::DrawScene(Scene scene)
 	{
 		this->DrawObject(*object);
 	}
+}
+
+void Window::SetFrameRateLimit(double framerate)
+{
+	this->framerate = framerate;
+}
+
+// in seconds
+double Window::GetDeltaTime()
+{
+	return this->deltaTime;
+}
+
+double Window::GetCurrentFramerate()
+{
+	return 1 / this->deltaTime;
 }

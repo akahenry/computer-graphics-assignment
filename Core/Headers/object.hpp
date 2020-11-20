@@ -20,6 +20,7 @@ public:
 	Vector3 scale = Vector3(1, 1, 1);
 	float rotationAngle = 0;
     Vector3 rotationAxis = Vector3(0,1,0);
+	Vector3 origin = Vector3(0, 0, 0);
     Texture texture;
     bool usingTexture = false;
 
