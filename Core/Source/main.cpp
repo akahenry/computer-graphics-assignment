@@ -143,6 +143,16 @@ int main()
 
 			car.position += motion;
 			car.rotationAngle += carHorizontalRotation * window.GetDeltaTime();
+			
+			if (CollisionUtility::RectangleRectangle(car, flag))
+			{
+				car.position = Vector3(4, 0, -2);
+			}
+
+			if (!CollisionUtility::RectangleRectangle(car, road))
+			{
+				car.position.y -= 10 * window.GetDeltaTime();
+			}
 
 			if (hiddenMouse)
 			{
@@ -154,6 +164,8 @@ int main()
 				car.position.y + 5,
 				car.position.z + 5 * sin(car.rotationAngle + relativeLookAtHorizontalRotation)
 			};
+
+			
 		}
 		// Free Camera
 		else
@@ -175,6 +187,8 @@ int main()
 				Vector3 p3 = (p4 - p1).ProjectedOnto(lookAtCamera.getViewVector()) * 2/3 + (p4 - p1).RejectedOnto(lookAtCamera.getViewVector()) + p1;
 				freeCamera.position = MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT);
 				//freeCamera.setViewVector(freeCamera.position - MovementUtility::Bezier(std::vector<Vector3>{ p1, p2, p3, p4}, animationT-animationSpeed));
+
+				
 			}
 			else
 			{
@@ -199,9 +213,16 @@ int main()
 				{
 					motion.x = speed;
 				}
+
 				float ypos = freeCamera.position.y;
 				freeCamera.MoveCameraRelatively(motion);
-				freeCamera.position.y = ypos;
+
+				//freeCamera.position.y = ypos;
+
+				if (CollisionUtility::RectanglePoint(car, freeCamera.position))
+				{
+					freeCamera.MoveCameraRelatively(-motion);
+				}
 			}
 		}
 
