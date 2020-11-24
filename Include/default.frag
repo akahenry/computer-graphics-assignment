@@ -22,6 +22,7 @@ uniform mat4 projection;
 uniform bool using_texture;
 uniform bool using_texture_coords;
 uniform bool render_as_black;
+uniform bool blinn_phong = false;
 
 // Componentes de iluminação
 uniform vec4 light_position; // Posição da luz
@@ -53,7 +54,7 @@ void main()
         vec4 l = normalize(position_world - light_position); // 1.0,1.0,0.5,0.0
         vec4 v = normalize(camera_position - p);
         vec4 r = -l + 2*n*(dot(n, l));
-
+        vec4 h = normalize(v + l);
 
         vec3 I = source_spectrum;
         vec3 Ia = ambient_spectrum;
@@ -63,6 +64,7 @@ void main()
         vec3 lambertDiffuse = Kd*I*max(0, dot(n, l));
         vec3 ambientTerm = Ka*Ia;
         vec3 phongSpecularTerm  = Ks*I*pow(max(0, dot(r, v)), q);
+        vec3 blinnPhongSpecularTerm = Ks*I*pow(dot(n, h), q);
 
         if (using_texture)
         {
@@ -97,7 +99,15 @@ void main()
                                         cor_interpolada.y,
                                         cor_interpolada.z);
 
-            color = vec4(lambertDiffuse*colorInterpolada + phongSpecularTerm + ambientTerm, cor_interpolada.w);
+
+            if (!blinn_phong)
+            {
+                color = vec4(lambertDiffuse*colorInterpolada + phongSpecularTerm + ambientTerm, cor_interpolada.w);
+            }           
+            else
+            {
+                color = vec4(lambertDiffuse*colorInterpolada + blinnPhongSpecularTerm + ambientTerm, cor_interpolada.w);
+            }
         }
     }
     else

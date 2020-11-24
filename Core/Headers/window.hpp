@@ -43,6 +43,7 @@ private:
 	GLint render_as_black_uniform;
 	GLint using_texture_uniform;
 	GLint using_texture_coords_uniform;
+	GLint blinn_phong_uniform;
 	Shader defaultShader;
 	double framerate = -1;
 	double deltaTime = 0; // tempo desde o ultimo desenho da tela

@@ -48,6 +48,7 @@ Window::Window(int width, int height, const char* name)
 	render_as_black_uniform = glGetUniformLocation(program_id, "render_as_black");
 	using_texture_uniform = glGetUniformLocation(program_id, "using_texture");
 	using_texture_coords_uniform = glGetUniformLocation(program_id, "using_texture_coords");
+	blinn_phong_uniform = glGetUniformLocation(program_id, "blinn_phong");
 
 	// Habilitamos o Z-buffer
 	glEnable(GL_DEPTH_TEST);
@@ -242,7 +243,8 @@ void Window::DrawMesh(Mesh mesh, bool usingTexture)
 	glUniform1i(render_as_black_uniform, false);
 	glUniform1i(using_texture_uniform, usingTexture);
 	glUniform1i(using_texture_coords_uniform, mesh.usingTextureCoords);
-
+	glUniform1i(blinn_phong_uniform, true);
+		
 	glUseProgram(this->defaultShader.program_id);
 
 	glDrawElements(
